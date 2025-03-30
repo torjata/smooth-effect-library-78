@@ -21,6 +21,9 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
       animationProps['whileHover'] = { y: -5 };
     }
 
+    // Separate React's HTML props that might conflict with Framer Motion
+    const { onDrag, ...otherProps } = props;
+
     return (
       <motion.div
         ref={ref}
@@ -31,7 +34,7 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
           className
         )}
         {...animationProps}
-        {...props}
+        {...otherProps}
       />
     );
   }
