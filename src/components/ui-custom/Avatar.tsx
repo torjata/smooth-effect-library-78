@@ -1,6 +1,5 @@
 
 import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
 
 interface AvatarProps {
   src?: string;
@@ -43,7 +42,7 @@ export function Avatar({
     if (!status) return "";
     
     const statusSize = size === "xl" ? "h-4 w-4" : size === "lg" ? "h-3.5 w-3.5" : "h-2.5 w-2.5";
-    const baseClass = `absolute rounded-full ring-2 ring-background ${statusSize}`;
+    const baseClass = `absolute rounded-full ring-1 ring-background ${statusSize}`;
     
     switch (status) {
       case "online": return `${baseClass} bg-green-500 bottom-0 right-0`;
@@ -54,15 +53,10 @@ export function Avatar({
   };
   
   return (
-    <motion.div 
-      className="relative inline-flex"
-      initial={{ scale: 0.9, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      transition={{ duration: 0.3 }}
-    >
+    <div className="relative inline-flex">
       <div
         className={cn(
-          "glassmorphism relative flex shrink-0 overflow-hidden rounded-full",
+          "relative flex shrink-0 overflow-hidden rounded-full bg-gradient-to-br from-background/80 to-muted/50",
           getSizeClass(),
           className
         )}
@@ -74,7 +68,7 @@ export function Avatar({
             className="h-full w-full object-cover"
           />
         ) : (
-          <div className="flex h-full w-full items-center justify-center bg-muted font-medium">
+          <div className="flex h-full w-full items-center justify-center bg-gradient-to-r from-muted/50 to-muted/60 font-medium">
             {fallback ? getInitials(fallback) : "?"}
           </div>
         )}
@@ -87,6 +81,6 @@ export function Avatar({
           {badge}
         </div>
       )}
-    </motion.div>
+    </div>
   );
 }

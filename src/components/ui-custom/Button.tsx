@@ -1,14 +1,12 @@
 
 import React, { forwardRef, ButtonHTMLAttributes, useState } from "react";
 import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
 
-export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "onClick"> {
+export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "default" | "primary" | "secondary" | "outline" | "ghost" | "destructive";
   size?: "sm" | "md" | "lg" | "icon";
   isLoading?: boolean;
   ripple?: boolean;
-  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -39,23 +37,11 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       onClick?.(e);
     };
 
-    // Animation properties
-    const animationProps = {
-      whileHover: { scale: 1.02 },
-      whileTap: { scale: 0.98 }
-    };
-
-    // Create a clean version of props without any potentially conflicting event handlers
-    const {
-      onDrag, onDragEnd, onDragStart, onDragEnter, onDragLeave,
-      onDragOver, onDragExit, ...cleanProps
-    } = props;
-
     return (
-      <motion.button
+      <button
         ref={ref}
         className={cn(
-          "relative inline-flex items-center justify-center overflow-hidden rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
+          "relative inline-flex items-center justify-center overflow-hidden rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:scale-102 active:scale-98 transition-transform duration-200",
           {
             // Size variations
             "h-9 px-3 text-sm": size === "sm",
@@ -64,17 +50,16 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             "h-9 w-9 p-0": size === "icon",
 
             // Variant variations
-            "glassmorphism bg-primary/80 text-primary-foreground hover:bg-primary/90": variant === "default" || variant === "primary",
-            "glassmorphism bg-secondary/80 text-secondary-foreground hover:bg-secondary/90": variant === "secondary",
-            "border-2 border-primary/30 bg-transparent hover:bg-primary/10": variant === "outline",
+            "bg-gradient-to-r from-primary/90 to-primary/80 text-primary-foreground hover:from-primary hover:to-primary/90": variant === "default" || variant === "primary",
+            "bg-gradient-to-r from-secondary/90 to-secondary/80 text-secondary-foreground hover:from-secondary hover:to-secondary/90": variant === "secondary",
+            "border border-primary/30 bg-transparent hover:bg-primary/10": variant === "outline",
             "bg-transparent text-foreground hover:bg-accent": variant === "ghost",
-            "glassmorphism bg-destructive/80 text-destructive-foreground hover:bg-destructive/90": variant === "destructive",
+            "bg-gradient-to-r from-destructive/90 to-destructive/80 text-destructive-foreground hover:from-destructive hover:to-destructive/90": variant === "destructive",
           },
           className
         )}
         onClick={handleClick}
-        {...animationProps}
-        {...cleanProps}
+        {...props}
       >
         {isLoading ? (
           <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
@@ -92,7 +77,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             }}
           />
         )}
-      </motion.button>
+      </button>
     );
   }
 );

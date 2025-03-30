@@ -1,7 +1,6 @@
 
 import { cn } from "@/lib/utils";
 import { X } from "lucide-react";
-import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 
@@ -48,40 +47,34 @@ export function Modal({ isOpen, onClose, children, className }: ModalProps) {
   if (!isMounted) return null;
   
   return createPortal(
-    <AnimatePresence>
+    <>
       {isOpen && (
         <>
-          <motion.div
-            className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+          <div
+            className="fixed inset-0 z-50 bg-background/50 backdrop-blur-sm transition-opacity"
             onClick={onClose}
           />
           <div className="fixed inset-0 z-50 flex items-center justify-center">
-            <motion.div
+            <div
               className={cn(
-                "glassmorphism max-w-md max-h-[85vh] overflow-auto rounded-lg p-6 shadow-lg",
+                "max-w-md max-h-[85vh] overflow-auto rounded-lg p-6 shadow-sm",
+                "bg-gradient-to-br from-card to-background/90 border border-border/50",
                 className
               )}
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.2 }}
               onClick={(e) => e.stopPropagation()}
             >
               <button
                 onClick={onClose}
-                className="absolute right-4 top-4 rounded-full p-1 text-foreground/50 hover:text-foreground"
+                className="absolute right-4 top-4 rounded-full p-1 text-foreground/50 hover:text-foreground transition-colors"
               >
                 <X size={18} />
               </button>
               {children}
-            </motion.div>
+            </div>
           </div>
         </>
       )}
-    </AnimatePresence>,
+    </>,
     document.body
   );
 }

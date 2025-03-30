@@ -1,6 +1,6 @@
+
 import React, { HTMLAttributes, forwardRef } from "react";
 import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
 
 export interface CardProps extends HTMLAttributes<HTMLDivElement> {
   hover?: boolean;
@@ -9,34 +9,16 @@ export interface CardProps extends HTMLAttributes<HTMLDivElement> {
 
 const Card = forwardRef<HTMLDivElement, CardProps>(
   ({ className, hover = true, glass = true, ...props }, ref) => {
-    // Animation properties
-    const animationProps = {
-      initial: { opacity: 0, y: 20 },
-      animate: { opacity: 1, y: 0 },
-      transition: { duration: 0.3 }
-    };
-
-    if (hover) {
-      animationProps['whileHover'] = { y: -5 };
-    }
-
-    // Create a clean version of props without any potentially conflicting event handlers
-    const {
-      onDrag, onDragEnd, onDragStart, onDragEnter, onDragLeave,
-      onDragOver, onDragExit, ...cleanProps
-    } = props;
-
     return (
-      <motion.div
+      <div
         ref={ref}
         className={cn(
-          "rounded-lg border p-4 shadow-sm",
-          glass && "glassmorphism",
-          hover && "card-hover",
+          "rounded-lg border p-4 transition-all duration-300",
+          glass && "bg-gradient-to-br from-card/60 to-background/60 backdrop-blur-sm border-white/10 dark:border-white/5",
+          hover && "hover:-translate-y-1 hover:shadow-sm",
           className
         )}
-        {...animationProps}
-        {...cleanProps}
+        {...props}
       />
     );
   }

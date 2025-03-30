@@ -1,6 +1,5 @@
 
 import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
 import { useState } from "react";
 
 interface SwitchProps {
@@ -30,7 +29,7 @@ export function Switch({
   
   return (
     <div className="flex items-center">
-      <motion.button
+      <button
         type="button"
         role="switch"
         aria-checked={isChecked}
@@ -39,25 +38,22 @@ export function Switch({
         className={cn(
           "group relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
           isChecked 
-            ? "glassmorphism bg-primary/80" 
-            : "glassmorphism bg-muted",
+            ? "bg-gradient-to-r from-primary to-primary/80" 
+            : "bg-gradient-to-r from-muted to-muted/80",
           disabled && "cursor-not-allowed opacity-50",
           className
         )}
-        whileTap={{ scale: 0.95 }}
       >
-        <motion.span
+        <span
           className={cn(
-            "pointer-events-none block h-5 w-5 rounded-full bg-background shadow-lg",
+            "pointer-events-none block h-5 w-5 rounded-full bg-background transition-transform duration-200 shadow-sm",
             disabled ? "opacity-50" : ""
           )}
-          animate={{ 
-            x: isChecked ? "100%" : "0%",
-            translateX: isChecked ? -10 : 5
+          style={{ 
+            transform: isChecked ? "translateX(calc(100% - 0.25rem))" : "translateX(0.25rem)"
           }}
-          transition={{ type: "spring", stiffness: 500, damping: 30 }}
         />
-      </motion.button>
+      </button>
       {label && (
         <label
           className={cn(

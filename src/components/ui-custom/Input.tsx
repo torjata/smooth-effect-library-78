@@ -1,6 +1,5 @@
 
 import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
 import { InputHTMLAttributes, forwardRef, useState } from "react";
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -29,13 +28,16 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
               {icon}
             </div>
           )}
-          <motion.div
-            animate={isFocused ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.97 }}
-            className="absolute inset-0 rounded-md bg-primary/5 blur-sm"
+          <div 
+            className={cn(
+              "absolute inset-0 rounded-md transition-opacity duration-300",
+              isFocused ? "opacity-100" : "opacity-0",
+              "bg-gradient-to-r from-primary/5 to-accent/5 blur-[2px]"
+            )}
           />
           <input
             className={cn(
-              "glassmorphism flex h-10 w-full rounded-md border bg-transparent px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+              "flex h-10 w-full rounded-md border bg-transparent px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring transition-colors",
               {
                 "pl-9": !!icon,
                 "border-red-500 focus-visible:ring-red-500": !!error,
