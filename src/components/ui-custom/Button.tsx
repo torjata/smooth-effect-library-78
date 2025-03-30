@@ -1,7 +1,7 @@
 
+import React, { forwardRef, ButtonHTMLAttributes, useState } from "react";
 import { cn } from "@/lib/utils";
-import { forwardRef, ButtonHTMLAttributes, useState } from "react";
-import { motion, MotionProps } from "framer-motion";
+import { motion } from "framer-motion";
 
 export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "onClick"> {
   variant?: "default" | "primary" | "secondary" | "outline" | "ghost" | "destructive";
@@ -39,8 +39,8 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       onClick?.(e);
     };
 
-    // Define motion props separately to avoid type conflicts
-    const motionProps: MotionProps = {
+    // Animation properties
+    const animationProps = {
       whileHover: { scale: 1.02 },
       whileTap: { scale: 0.98 }
     };
@@ -67,7 +67,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           className
         )}
         onClick={handleClick}
-        {...motionProps}
+        {...animationProps}
         {...props}
       >
         {isLoading ? (

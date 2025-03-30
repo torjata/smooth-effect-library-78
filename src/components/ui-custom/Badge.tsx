@@ -1,6 +1,7 @@
 
+import React from "react";
 import { cn } from "@/lib/utils";
-import { motion, MotionProps } from "framer-motion";
+import { motion } from "framer-motion";
 
 type BadgeVariant = "default" | "primary" | "secondary" | "outline" | "success" | "warning" | "danger";
 
@@ -15,8 +16,8 @@ export function Badge({
   animate = true,
   ...props
 }: BadgeProps) {
-  // Define motion props separately to avoid type conflicts
-  const motionProps: MotionProps = animate ? {
+  // Define animation properties
+  const animationProps = animate ? {
     initial: { scale: 0.8, opacity: 0 },
     animate: { scale: 1, opacity: 1 },
     whileHover: { scale: 1.05 },
@@ -37,7 +38,7 @@ export function Badge({
         },
         className
       )}
-      {...motionProps}
+      {...animationProps}
       {...props}
     />
   );

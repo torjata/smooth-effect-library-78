@@ -1,7 +1,7 @@
 
+import React, { HTMLAttributes, forwardRef } from "react";
 import { cn } from "@/lib/utils";
-import { motion, MotionProps } from "framer-motion";
-import { HTMLAttributes, forwardRef } from "react";
+import { motion } from "framer-motion";
 
 export interface CardProps extends HTMLAttributes<HTMLDivElement> {
   hover?: boolean;
@@ -10,15 +10,15 @@ export interface CardProps extends HTMLAttributes<HTMLDivElement> {
 
 const Card = forwardRef<HTMLDivElement, CardProps>(
   ({ className, hover = true, glass = true, ...props }, ref) => {
-    // Define motion props separately to avoid type conflicts
-    const motionProps: MotionProps = {
+    // Animation properties
+    const animationProps = {
       initial: { opacity: 0, y: 20 },
       animate: { opacity: 1, y: 0 },
       transition: { duration: 0.3 }
     };
 
     if (hover) {
-      motionProps.whileHover = { y: -5 };
+      animationProps['whileHover'] = { y: -5 };
     }
 
     return (
@@ -30,7 +30,7 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
           hover && "card-hover",
           className
         )}
-        {...motionProps}
+        {...animationProps}
         {...props}
       />
     );
