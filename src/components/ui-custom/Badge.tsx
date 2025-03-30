@@ -1,10 +1,10 @@
 
 import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
+import { motion, HTMLMotionProps } from "framer-motion";
 
 type BadgeVariant = "default" | "primary" | "secondary" | "outline" | "success" | "warning" | "danger";
 
-interface BadgeProps extends React.HTMLAttributes<HTMLDivElement> {
+interface BadgeProps extends Omit<HTMLMotionProps<"div">, "animate" | "initial" | "whileHover"> {
   variant?: BadgeVariant;
   animate?: boolean;
 }
@@ -29,10 +29,12 @@ export function Badge({
         },
         className
       )}
-      initial={animate ? { scale: 0.8, opacity: 0 } : undefined}
-      animate={animate ? { scale: 1, opacity: 1 } : undefined}
-      whileHover={animate ? { scale: 1.05 } : undefined}
-      transition={{ type: "spring", stiffness: 500, damping: 30 }}
+      {...(animate ? {
+        initial: { scale: 0.8, opacity: 0 },
+        animate: { scale: 1, opacity: 1 },
+        whileHover: { scale: 1.05 },
+        transition: { type: "spring", stiffness: 500, damping: 30 }
+      } : {})}
       {...props}
     />
   );

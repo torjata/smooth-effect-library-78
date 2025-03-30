@@ -1,6 +1,5 @@
-
 import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
+import { motion, HTMLMotionProps } from "framer-motion";
 import { HTMLAttributes, forwardRef } from "react";
 
 export interface CardProps extends HTMLAttributes<HTMLDivElement> {
@@ -10,6 +9,16 @@ export interface CardProps extends HTMLAttributes<HTMLDivElement> {
 
 const Card = forwardRef<HTMLDivElement, CardProps>(
   ({ className, hover = true, glass = true, ...props }, ref) => {
+    const motionProps: HTMLMotionProps<"div"> = {
+      initial: { opacity: 0, y: 20 },
+      animate: { opacity: 1, y: 0 },
+      transition: { duration: 0.3 }
+    };
+
+    if (hover) {
+      motionProps.whileHover = { y: -5 };
+    }
+
     return (
       <motion.div
         ref={ref}
@@ -19,10 +28,7 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
           hover && "card-hover",
           className
         )}
-        whileHover={hover ? { y: -5 } : {}}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
+        {...motionProps}
         {...props}
       />
     );

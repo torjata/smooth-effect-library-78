@@ -1,7 +1,6 @@
-
+import React, { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
 
 interface TooltipProps {
   content: React.ReactNode;
@@ -60,7 +59,6 @@ export function Tooltip({
     setIsOpen(false);
   };
   
-  // Clone the children with mouse event handlers
   const triggerChild = React.cloneElement(children, {
     ref: childRef,
     onMouseEnter: (e: any) => {
@@ -110,7 +108,6 @@ export function Tooltip({
         break;
     }
     
-    // Adjust alignment
     if (align === 'start') {
       if (side === 'top' || side === 'bottom') {
         styles.transform = styles.transform.replace('-50%', '0');

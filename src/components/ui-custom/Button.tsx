@@ -1,13 +1,14 @@
 
 import { cn } from "@/lib/utils";
 import { forwardRef, ButtonHTMLAttributes, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, HTMLMotionProps } from "framer-motion";
 
-export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "onClick"> {
   variant?: "default" | "primary" | "secondary" | "outline" | "ghost" | "destructive";
   size?: "sm" | "md" | "lg" | "icon";
   isLoading?: boolean;
   ripple?: boolean;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -18,6 +19,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     isLoading = false, 
     ripple = true,
     children, 
+    onClick,
     ...props 
   }, ref) => {
     const [rippleEffect, setRippleEffect] = useState<{ x: number, y: number, size: number } | null>(null);
@@ -34,7 +36,12 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         setTimeout(() => setRippleEffect(null), 500);
       }
       
-      props.onClick?.(e);
+      onClick?.(e);
+    };
+
+    const motionProps: HTMLMotionProps<"button"> = {
+      whileHover: { scale: 1.02 },
+      whileTap: { scale: 0.98 }
     };
 
     return (
@@ -58,9 +65,8 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           },
           className
         )}
-        whileHover={{ scale: 1.02 }}
-        whileTap={{ scale: 0.98 }}
         onClick={handleClick}
+        {...motionProps}
         {...props}
       >
         {isLoading ? (
