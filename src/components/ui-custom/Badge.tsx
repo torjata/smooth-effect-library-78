@@ -1,11 +1,11 @@
 
 import React from "react";
 import { cn } from "@/lib/utils";
-import { motion, HTMLMotionProps } from "framer-motion";
+import { motion } from "framer-motion";
 
 type BadgeVariant = "default" | "primary" | "secondary" | "outline" | "success" | "warning" | "danger";
 
-interface BadgeProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "animate"> {
+interface BadgeProps extends React.HTMLAttributes<HTMLDivElement> {
   variant?: BadgeVariant;
   animate?: boolean;
 }
@@ -24,8 +24,11 @@ export function Badge({
     transition: { type: "spring", stiffness: 500, damping: 30 }
   } : {};
 
-  // Separate React's HTML props that might conflict with Framer Motion
-  const { onDrag, ...otherProps } = props;
+  // Create a clean version of props without any potentially conflicting event handlers
+  const {
+    onDrag, onDragEnd, onDragStart, onDragEnter, onDragLeave,
+    onDragOver, onDragExit, ...cleanProps
+  } = props;
   
   return (
     <motion.div
@@ -42,7 +45,7 @@ export function Badge({
         className
       )}
       {...animationProps}
-      {...otherProps}
+      {...cleanProps}
     />
   );
 }

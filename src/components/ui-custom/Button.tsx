@@ -45,8 +45,11 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       whileTap: { scale: 0.98 }
     };
 
-    // Separate React's HTML props that might conflict with Framer Motion
-    const { onDrag, ...otherProps } = props;
+    // Create a clean version of props without any potentially conflicting event handlers
+    const {
+      onDrag, onDragEnd, onDragStart, onDragEnter, onDragLeave,
+      onDragOver, onDragExit, ...cleanProps
+    } = props;
 
     return (
       <motion.button
@@ -71,7 +74,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         )}
         onClick={handleClick}
         {...animationProps}
-        {...otherProps}
+        {...cleanProps}
       >
         {isLoading ? (
           <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
