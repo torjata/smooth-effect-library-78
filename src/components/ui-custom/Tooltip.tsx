@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
@@ -88,21 +89,21 @@ export function Tooltip({
     switch (side) {
       case 'top':
         styles.left = coords.x;
-        styles.top = coords.y - sideOffset - 20;
+        styles.top = coords.y - 10;
         styles.transform = 'translate(-50%, -100%)';
         break;
       case 'bottom':
         styles.left = coords.x;
-        styles.top = coords.y + sideOffset + 20;
+        styles.top = coords.y + 10;
         styles.transform = 'translate(-50%, 0)';
         break;
       case 'left':
-        styles.left = coords.x - sideOffset - 20;
+        styles.left = coords.x - 10;
         styles.top = coords.y;
         styles.transform = 'translate(-100%, -50%)';
         break;
       case 'right':
-        styles.left = coords.x + sideOffset + 20;
+        styles.left = coords.x + 10;
         styles.top = coords.y;
         styles.transform = 'translate(0, -50%)';
         break;
@@ -125,27 +126,27 @@ export function Tooltip({
     switch (side) {
       case 'top':
         return {
-          initial: { opacity: 0, y: 10 },
+          initial: { opacity: 0, y: 5 },
           animate: { opacity: 1, y: 0 },
-          exit: { opacity: 0, y: 10 },
+          exit: { opacity: 0, y: 5 },
         };
       case 'bottom':
         return {
-          initial: { opacity: 0, y: -10 },
+          initial: { opacity: 0, y: -5 },
           animate: { opacity: 1, y: 0 },
-          exit: { opacity: 0, y: -10 },
+          exit: { opacity: 0, y: -5 },
         };
       case 'left':
         return {
-          initial: { opacity: 0, x: 10 },
+          initial: { opacity: 0, x: 5 },
           animate: { opacity: 1, x: 0 },
-          exit: { opacity: 0, x: 10 },
+          exit: { opacity: 0, x: 5 },
         };
       case 'right':
         return {
-          initial: { opacity: 0, x: -10 },
+          initial: { opacity: 0, x: -5 },
           animate: { opacity: 1, x: 0 },
-          exit: { opacity: 0, x: -10 },
+          exit: { opacity: 0, x: -5 },
         };
     }
   };
@@ -157,7 +158,7 @@ export function Tooltip({
         {isOpen && (
           <motion.div
             className={cn(
-              "glassmorphism z-50 max-w-xs overflow-hidden rounded-md px-3 py-1.5 text-xs text-foreground shadow-md",
+              "z-50 max-w-xs overflow-hidden rounded-md px-3 py-1.5 text-xs text-foreground shadow-md bg-popover border border-border/20",
               className
             )}
             style={getPositionStyles()}

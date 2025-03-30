@@ -14,6 +14,7 @@ export function DocsLayout({ children }: DocsLayoutProps) {
   
   const navLinks = [
     { href: "/", label: "Home" },
+    { href: "/docs", label: "Documentation" },
     { href: "/docs/button", label: "Button" },
     { href: "/docs/card", label: "Card" },
     { href: "/docs/badge", label: "Badge" },
@@ -22,6 +23,13 @@ export function DocsLayout({ children }: DocsLayoutProps) {
     { href: "/docs/avatar", label: "Avatar" },
     { href: "/docs/modal", label: "Modal" },
     { href: "/docs/dropdown", label: "Dropdown" },
+    { href: "/docs/tooltip", label: "Tooltip" },
+    { href: "/docs/accordion", label: "Accordion" },
+    { href: "/docs/progress", label: "Progress" },
+    { href: "/docs/tabs", label: "Tabs" },
+    { href: "/docs/stepper", label: "Stepper" },
+    { href: "/docs/toast", label: "Toast" },
+    { href: "/docs/skeleton", label: "Skeleton" },
   ]
   
   return (
@@ -39,7 +47,7 @@ export function DocsLayout({ children }: DocsLayoutProps) {
               key={link.href}
               to={link.href}
               className={cn(
-                "block px-3 py-2 rounded-md text-sm transition-colors",
+                "block px-3 py-2 rounded-md text-sm transition-colors duration-200",
                 currentPath === link.href
                   ? "bg-primary/10 text-primary font-medium"
                   : "hover:bg-primary/5 text-muted-foreground hover:text-foreground"
@@ -60,7 +68,7 @@ export function DocsLayout({ children }: DocsLayoutProps) {
       </div>
       
       {/* Main content */}
-      <main className="flex-1 p-6 md:p-10 pt-20 md:pt-10">
+      <main className="flex-1 p-6 md:p-10 pt-20 md:pt-10 overflow-y-auto">
         {children}
       </main>
     </div>

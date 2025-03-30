@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import { AnimatePresence, motion } from "framer-motion";
 
 interface ModalProps {
   isOpen: boolean;
@@ -47,15 +48,23 @@ export function Modal({ isOpen, onClose, children, className }: ModalProps) {
   if (!isMounted) return null;
   
   return createPortal(
-    <>
+    <AnimatePresence>
       {isOpen && (
         <>
-          <div
-            className="fixed inset-0 z-50 bg-background/50 backdrop-blur-sm transition-opacity"
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-50 bg-background/50 backdrop-blur-sm"
             onClick={onClose}
           />
           <div className="fixed inset-0 z-50 flex items-center justify-center">
-            <div
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 10 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
               className={cn(
                 "max-w-md max-h-[85vh] overflow-auto rounded-lg p-6 shadow-sm",
                 "bg-gradient-to-br from-card to-background/90 border border-border/50",
@@ -70,11 +79,11 @@ export function Modal({ isOpen, onClose, children, className }: ModalProps) {
                 <X size={18} />
               </button>
               {children}
-            </div>
+            </motion.div>
           </div>
         </>
       )}
-    </>,
+    </AnimatePresence>,
     document.body
   );
 }

@@ -46,13 +46,37 @@ export default function BadgeDoc() {
         <div className="mt-10 space-y-4">
           <h2 className="text-2xl font-bold">API Reference</h2>
           
-          <div>
-            <h3 className="text-xl font-semibold">Props</h3>
-            <ul className="list-disc pl-6 mt-2 space-y-2">
-              <li><code>variant</code> - Badge style variant: default, primary, secondary, outline, success, warning, danger</li>
-              <li><code>animate</code> - Whether the badge should animate (defaults to true)</li>
-              <li><code>className</code> - Additional CSS classes</li>
-            </ul>
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse">
+              <thead>
+                <tr className="border-b">
+                  <th className="py-3 px-4 text-left">Prop</th>
+                  <th className="py-3 px-4 text-left">Type</th>
+                  <th className="py-3 px-4 text-left">Default</th>
+                  <th className="py-3 px-4 text-left">Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="border-b">
+                  <td className="py-3 px-4 align-top font-mono text-sm">variant</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">"default" | "primary" | "secondary" | "outline" | "success" | "warning" | "danger"</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">"default"</td>
+                  <td className="py-3 px-4 align-top text-sm">Badge style variant</td>
+                </tr>
+                <tr className="border-b">
+                  <td className="py-3 px-4 align-top font-mono text-sm">animate</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">boolean</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">true</td>
+                  <td className="py-3 px-4 align-top text-sm">Whether the badge should animate</td>
+                </tr>
+                <tr>
+                  <td className="py-3 px-4 align-top font-mono text-sm">className</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">string</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">-</td>
+                  <td className="py-3 px-4 align-top text-sm">Additional CSS classes</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

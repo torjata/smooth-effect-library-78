@@ -5,8 +5,11 @@ import { ComponentCode } from "@/components/docs/ComponentExample";
 import { Tooltip } from "@/components/ui-custom/Tooltip";
 import { Button } from "@/components/ui-custom/Button";
 import { Info, HelpCircle, Settings, User } from "lucide-react";
+import { useState } from "react";
 
 export default function TooltipDoc() {
+  const [showTooltips, setShowTooltips] = useState(false);
+  
   return (
     <DocsLayout>
       <div className="space-y-6">
@@ -17,15 +20,35 @@ export default function TooltipDoc() {
           </p>
         </div>
 
-        <div className="bg-yellow-50 border border-yellow-200 rounded-md p-4 text-yellow-800 dark:bg-yellow-900/20 dark:border-yellow-800 dark:text-yellow-300">
-          <p className="text-sm">The tooltip examples are visible below, but for an interactive experience, please visit the showcase page. Tooltips rely on hover interactions that may not function correctly within this documentation view.</p>
+        <div className="bg-yellow-50 border border-yellow-200 rounded-md p-4 text-yellow-800 dark:bg-yellow-900/20 dark:border-yellow-800 dark:text-yellow-300 flex flex-col">
+          <p className="text-sm">Enable tooltips in the documentation view:</p>
+          <div className="mt-2">
+            <button 
+              onClick={() => setShowTooltips(!showTooltips)} 
+              className={`px-4 py-2 rounded-md text-sm transition-all duration-200 ${
+                showTooltips 
+                  ? "bg-green-500 text-white" 
+                  : "bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200"
+              }`}
+            >
+              {showTooltips ? "Hide Tooltips" : "Show Tooltips"}
+            </button>
+          </div>
         </div>
 
         <ComponentExample title="Basic Tooltip">
           <div className="flex justify-center py-8">
-            <Button variant="outline" size="icon">
-              <Info className="h-4 w-4" />
-            </Button>
+            {showTooltips ? (
+              <Tooltip content="Shows more information about this feature">
+                <Button variant="outline" size="icon">
+                  <Info className="h-4 w-4" />
+                </Button>
+              </Tooltip>
+            ) : (
+              <Button variant="outline" size="icon">
+                <Info className="h-4 w-4" />
+              </Button>
+            )}
           </div>
           <ComponentCode>
 {`<Tooltip content="Shows more information about this feature">
@@ -38,10 +61,29 @@ export default function TooltipDoc() {
 
         <ComponentExample title="Tooltip Positions">
           <div className="flex flex-wrap justify-center gap-4 py-8">
-            <Button variant="outline">Top</Button>
-            <Button variant="outline">Right</Button>
-            <Button variant="outline">Bottom</Button>
-            <Button variant="outline">Left</Button>
+            {showTooltips ? (
+              <>
+                <Tooltip content="This tooltip appears on top" side="top">
+                  <Button variant="outline">Top</Button>
+                </Tooltip>
+                <Tooltip content="This tooltip appears on the right" side="right">
+                  <Button variant="outline">Right</Button>
+                </Tooltip>
+                <Tooltip content="This tooltip appears on the bottom" side="bottom">
+                  <Button variant="outline">Bottom</Button>
+                </Tooltip>
+                <Tooltip content="This tooltip appears on the left" side="left">
+                  <Button variant="outline">Left</Button>
+                </Tooltip>
+              </>
+            ) : (
+              <>
+                <Button variant="outline">Top</Button>
+                <Button variant="outline">Right</Button>
+                <Button variant="outline">Bottom</Button>
+                <Button variant="outline">Left</Button>
+              </>
+            )}
           </div>
           <ComponentCode>
 {`<Tooltip content="This tooltip appears on top" side="top">
@@ -64,15 +106,37 @@ export default function TooltipDoc() {
 
         <ComponentExample title="With Icons">
           <div className="flex flex-wrap justify-center gap-4 py-8">
-            <Button variant="ghost" size="icon">
-              <HelpCircle className="h-5 w-5" />
-            </Button>
-            <Button variant="ghost" size="icon">
-              <Settings className="h-5 w-5" />
-            </Button>
-            <Button variant="ghost" size="icon">
-              <User className="h-5 w-5" />
-            </Button>
+            {showTooltips ? (
+              <>
+                <Tooltip content="Get help">
+                  <Button variant="ghost" size="icon">
+                    <HelpCircle className="h-5 w-5" />
+                  </Button>
+                </Tooltip>
+                <Tooltip content="Account settings">
+                  <Button variant="ghost" size="icon">
+                    <Settings className="h-5 w-5" />
+                  </Button>
+                </Tooltip>
+                <Tooltip content="Your profile">
+                  <Button variant="ghost" size="icon">
+                    <User className="h-5 w-5" />
+                  </Button>
+                </Tooltip>
+              </>
+            ) : (
+              <>
+                <Button variant="ghost" size="icon">
+                  <HelpCircle className="h-5 w-5" />
+                </Button>
+                <Button variant="ghost" size="icon">
+                  <Settings className="h-5 w-5" />
+                </Button>
+                <Button variant="ghost" size="icon">
+                  <User className="h-5 w-5" />
+                </Button>
+              </>
+            )}
           </div>
           <ComponentCode>
 {`<Tooltip content="Get help">
@@ -98,17 +162,55 @@ export default function TooltipDoc() {
         <div className="mt-10 space-y-4">
           <h2 className="text-2xl font-bold">API Reference</h2>
           
-          <div>
-            <h3 className="text-xl font-semibold">Props</h3>
-            <ul className="list-disc pl-6 mt-2 space-y-2">
-              <li><code>content</code> - The content to display inside the tooltip</li>
-              <li><code>children</code> - The element that triggers the tooltip</li>
-              <li><code>side</code> - Position of the tooltip: "top", "right", "bottom", "left" (default: "top")</li>
-              <li><code>sideOffset</code> - Distance between tooltip and trigger element in pixels (default: 4)</li>
-              <li><code>align</code> - Alignment along the trigger element: "start", "center", "end" (default: "center")</li>
-              <li><code>delayDuration</code> - Delay before the tooltip appears in milliseconds (default: 300)</li>
-              <li><code>className</code> - Additional CSS classes for the tooltip</li>
-            </ul>
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse">
+              <thead>
+                <tr className="border-b">
+                  <th className="py-3 px-4 text-left">Prop</th>
+                  <th className="py-3 px-4 text-left">Type</th>
+                  <th className="py-3 px-4 text-left">Default</th>
+                  <th className="py-3 px-4 text-left">Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="border-b">
+                  <td className="py-3 px-4 align-top font-mono text-sm">content</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">ReactNode</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">-</td>
+                  <td className="py-3 px-4 align-top text-sm">The content to display inside the tooltip</td>
+                </tr>
+                <tr className="border-b">
+                  <td className="py-3 px-4 align-top font-mono text-sm">children</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">ReactElement</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">-</td>
+                  <td className="py-3 px-4 align-top text-sm">The element that triggers the tooltip</td>
+                </tr>
+                <tr className="border-b">
+                  <td className="py-3 px-4 align-top font-mono text-sm">side</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">"top" | "right" | "bottom" | "left"</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">"top"</td>
+                  <td className="py-3 px-4 align-top text-sm">Position of the tooltip</td>
+                </tr>
+                <tr className="border-b">
+                  <td className="py-3 px-4 align-top font-mono text-sm">sideOffset</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">number</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">4</td>
+                  <td className="py-3 px-4 align-top text-sm">Distance between tooltip and trigger element in pixels</td>
+                </tr>
+                <tr className="border-b">
+                  <td className="py-3 px-4 align-top font-mono text-sm">align</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">"start" | "center" | "end"</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">"center"</td>
+                  <td className="py-3 px-4 align-top text-sm">Alignment along the trigger element</td>
+                </tr>
+                <tr>
+                  <td className="py-3 px-4 align-top font-mono text-sm">delayDuration</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">number</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">300</td>
+                  <td className="py-3 px-4 align-top text-sm">Delay before the tooltip appears in milliseconds</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

@@ -8,7 +8,7 @@ export interface CardProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const Card = forwardRef<HTMLDivElement, CardProps>(
-  ({ className, hover = true, glass = true, ...props }, ref) => {
+  ({ className, hover = false, glass = true, ...props }, ref) => {
     return (
       <div
         ref={ref}

@@ -24,20 +24,20 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         )}
         <div className="relative">
           {icon && (
-            <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+            <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
               {icon}
             </div>
           )}
           <div 
             className={cn(
-              "absolute inset-0 rounded-md transition-opacity duration-300",
+              "absolute inset-0 rounded-md transition-opacity duration-300 pointer-events-none",
               isFocused ? "opacity-100" : "opacity-0",
               "bg-gradient-to-r from-primary/5 to-accent/5 blur-[2px]"
             )}
           />
           <input
             className={cn(
-              "flex h-10 w-full rounded-md border bg-transparent px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring transition-colors",
+              "flex h-10 w-full rounded-md border bg-transparent px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring transition-colors duration-200",
               {
                 "pl-9": !!icon,
                 "border-red-500 focus-visible:ring-red-500": !!error,
