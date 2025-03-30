@@ -66,7 +66,7 @@ export function Modal({ isOpen, onClose, children, className }: ModalProps) {
               exit={{ opacity: 0, scale: 0.95, y: 10 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
               className={cn(
-                "max-w-md max-h-[85vh] overflow-auto rounded-lg p-6 shadow-sm",
+                "max-w-md max-h-[85vh] overflow-auto rounded-lg p-6 shadow-sm relative",
                 "bg-gradient-to-br from-card to-background/90 border border-border/50",
                 className
               )}
@@ -74,7 +74,7 @@ export function Modal({ isOpen, onClose, children, className }: ModalProps) {
             >
               <button
                 onClick={onClose}
-                className="absolute right-4 top-4 rounded-full p-1 text-foreground/50 hover:text-foreground transition-colors"
+                className="absolute right-3 top-3 rounded-full p-1 text-foreground/50 hover:text-foreground transition-colors duration-200"
               >
                 <X size={18} />
               </button>

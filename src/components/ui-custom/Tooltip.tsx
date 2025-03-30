@@ -23,9 +23,10 @@ export function Tooltip({
   delayDuration = 300,
 }: TooltipProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [coords, setCoords] = useState({ x: 0, y: 0 });
+  const [position, setPosition] = useState({ x: 0, y: 0 });
   const timeoutRef = useRef<number | null>(null);
   const childRef = useRef<HTMLElement>(null);
+  const tooltipRef = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
     return () => {
@@ -39,10 +40,45 @@ export function Tooltip({
     if (!childRef.current) return;
     
     const rect = childRef.current.getBoundingClientRect();
-    const x = rect.left + (rect.width / 2);
-    const y = rect.top + (rect.height / 2);
+    const childCenterX = rect.left + rect.width / 2;
+    const childCenterY = rect.top + rect.height / 2;
     
-    setCoords({ x, y });
+    let x = childCenterX;
+    let y = childCenterY;
+    
+    // Adjust position based on side
+    switch (side) {
+      case "top":
+        y = rect.top - sideOffset;
+        break;
+      case "bottom":
+        y = rect.bottom + sideOffset;
+        break;
+      case "left":
+        x = rect.left - sideOffset;
+        y = rect.top + rect.height / 2;
+        break;
+      case "right":
+        x = rect.right + sideOffset;
+        y = rect.top + rect.height / 2;
+        break;
+    }
+    
+    // Adjust alignment
+    if (align !== "center" && tooltipRef.current) {
+      const tooltipRect = tooltipRef.current.getBoundingClientRect();
+      if ((side === "top" || side === "bottom") && align === "start") {
+        x = rect.left;
+      } else if ((side === "top" || side === "bottom") && align === "end") {
+        x = rect.right;
+      } else if ((side === "left" || side === "right") && align === "start") {
+        y = rect.top;
+      } else if ((side === "left" || side === "right") && align === "end") {
+        y = rect.bottom;
+      }
+    }
+    
+    setPosition({ x, y });
   };
   
   const handleMouseEnter = () => {
@@ -83,38 +119,41 @@ export function Tooltip({
   const getPositionStyles = () => {
     const styles: React.CSSProperties = {
       position: 'fixed',
-      transform: 'translate(-50%, -50%)',
     };
     
     switch (side) {
       case 'top':
-        styles.left = coords.x;
-        styles.top = coords.y - 10;
+        styles.left = position.x;
+        styles.top = position.y;
         styles.transform = 'translate(-50%, -100%)';
         break;
       case 'bottom':
-        styles.left = coords.x;
-        styles.top = coords.y + 10;
+        styles.left = position.x;
+        styles.top = position.y;
         styles.transform = 'translate(-50%, 0)';
         break;
       case 'left':
-        styles.left = coords.x - 10;
-        styles.top = coords.y;
+        styles.left = position.x;
+        styles.top = position.y;
         styles.transform = 'translate(-100%, -50%)';
         break;
       case 'right':
-        styles.left = coords.x + 10;
-        styles.top = coords.y;
+        styles.left = position.x;
+        styles.top = position.y;
         styles.transform = 'translate(0, -50%)';
         break;
     }
     
-    if (align === 'start') {
+    if (align === "start") {
       if (side === 'top' || side === 'bottom') {
         styles.transform = styles.transform.replace('-50%', '0');
+      } else if (side === 'left' || side === 'right') {
+        styles.transform = styles.transform.replace('-50%', '0');
       }
-    } else if (align === 'end') {
+    } else if (align === "end") {
       if (side === 'top' || side === 'bottom') {
+        styles.transform = styles.transform.replace('-50%', '-100%');
+      } else if (side === 'left' || side === 'right') {
         styles.transform = styles.transform.replace('-50%', '-100%');
       }
     }
@@ -157,6 +196,7 @@ export function Tooltip({
       <AnimatePresence>
         {isOpen && (
           <motion.div
+            ref={tooltipRef}
             className={cn(
               "z-50 max-w-xs overflow-hidden rounded-md px-3 py-1.5 text-xs text-foreground shadow-md bg-popover border border-border/20",
               className

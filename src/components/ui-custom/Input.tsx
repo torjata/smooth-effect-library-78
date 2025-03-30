@@ -13,11 +13,11 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     const [isFocused, setIsFocused] = useState(false);
     
     return (
-      <div className="space-y-2">
+      <div className="space-y-2 w-full">
         {label && (
           <label 
             htmlFor={props.id} 
-            className="text-sm font-medium leading-none"
+            className="text-sm font-medium leading-none block"
           >
             {label}
           </label>
@@ -37,7 +37,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           />
           <input
             className={cn(
-              "flex h-10 w-full rounded-md border bg-transparent px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring transition-colors duration-200",
+              "flex h-10 w-full rounded-md border bg-transparent px-3 py-2 text-sm placeholder:text-muted-foreground",
+              "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
+              "transition-colors duration-200",
               {
                 "pl-9": !!icon,
                 "border-red-500 focus-visible:ring-red-500": !!error,

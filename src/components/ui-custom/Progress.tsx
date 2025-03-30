@@ -9,6 +9,7 @@ interface BaseProgressProps {
   indicatorClassName?: string;
   label?: string;
   showValue?: boolean;
+  gradient?: boolean;
 }
 
 interface LinearProgressProps extends BaseProgressProps {
@@ -22,7 +23,8 @@ export function LinearProgress({
   indicatorClassName,
   label,
   showValue = false,
-  variant = "default"
+  variant = "default",
+  gradient = false,
 }: LinearProgressProps) {
   const percentage = Math.min(Math.max(0, (value / max) * 100), 100);
   
@@ -42,12 +44,16 @@ export function LinearProgress({
       >
         <motion.div
           className={cn(
-            "h-full w-full flex-1",
+            "h-full rounded-full", // Added rounded-full here
             {
-              "bg-primary/70": variant === "default",
-              "bg-green-500/70": variant === "success",
-              "bg-yellow-500/70": variant === "warning",
-              "bg-red-500/70": variant === "danger",
+              "bg-primary/70": variant === "default" && !gradient,
+              "bg-green-500/70": variant === "success" && !gradient,
+              "bg-yellow-500/70": variant === "warning" && !gradient,
+              "bg-red-500/70": variant === "danger" && !gradient,
+              "bg-gradient-to-r from-primary/60 to-primary": variant === "default" && gradient,
+              "bg-gradient-to-r from-green-500/60 to-green-500": variant === "success" && gradient,
+              "bg-gradient-to-r from-yellow-500/60 to-yellow-500": variant === "warning" && gradient,
+              "bg-gradient-to-r from-red-500/60 to-red-500": variant === "danger" && gradient,
             },
             indicatorClassName
           )}
@@ -77,6 +83,7 @@ export function CircularProgress({
   size = 60,
   strokeWidth = 8,
   variant = "default",
+  gradient = false,
 }: CircularProgressProps) {
   const percentage = Math.min(Math.max(0, (value / max) * 100), 100);
   const radius = (size - strokeWidth) / 2;
@@ -85,12 +92,31 @@ export function CircularProgress({
   
   return (
     <div className={cn("relative inline-flex", className)}>
-      <motion.svg
+      <svg
         width={size}
         height={size}
         viewBox={`0 0 ${size} ${size}`}
         className="rotate-[-90deg]"
       >
+        {gradient && (
+          <defs>
+            <linearGradient id="progress-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" className={cn({
+                "stop-color-primary/60": variant === "default",
+                "stop-color-green-500/60": variant === "success",
+                "stop-color-yellow-500/60": variant === "warning",
+                "stop-color-red-500/60": variant === "danger",
+              })} />
+              <stop offset="100%" className={cn({
+                "stop-color-primary": variant === "default",
+                "stop-color-green-500": variant === "success",
+                "stop-color-yellow-500": variant === "warning",
+                "stop-color-red-500": variant === "danger",
+              })} />
+            </linearGradient>
+          </defs>
+        )}
+        
         <circle
           className="text-muted stroke-current"
           cx={size / 2}
@@ -101,12 +127,11 @@ export function CircularProgress({
         />
         <motion.circle
           className={cn(
-            "stroke-current",
-            {
-              "text-primary": variant === "default",
-              "text-green-500": variant === "success",
-              "text-yellow-500": variant === "warning",
-              "text-red-500": variant === "danger",
+            "stroke-current", {
+              "text-primary": variant === "default" && !gradient,
+              "text-green-500": variant === "success" && !gradient,
+              "text-yellow-500": variant === "warning" && !gradient,
+              "text-red-500": variant === "danger" && !gradient,
             },
             indicatorClassName
           )}
@@ -118,11 +143,12 @@ export function CircularProgress({
           strokeDashoffset={strokeDashoffset}
           strokeLinecap="round"
           fill="none"
+          stroke={gradient ? "url(#progress-gradient)" : undefined}
           initial={{ strokeDashoffset: circumference }}
           animate={{ strokeDashoffset }}
           transition={{ duration: 0.5, ease: "easeInOut" }}
         />
-      </motion.svg>
+      </svg>
       
       {(showValue || label) && (
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-sm">

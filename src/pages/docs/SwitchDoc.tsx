@@ -69,15 +69,49 @@ export default function SwitchDoc() {
         <div className="mt-10 space-y-4">
           <h2 className="text-2xl font-bold">API Reference</h2>
           
-          <div>
-            <h3 className="text-xl font-semibold">Props</h3>
-            <ul className="list-disc pl-6 mt-2 space-y-2">
-              <li><code>checked</code> - Whether the switch is checked or not</li>
-              <li><code>onCheckedChange</code> - Function called when the switch is toggled</li>
-              <li><code>disabled</code> - Whether the switch is disabled</li>
-              <li><code>label</code> - Optional label text</li>
-              <li><code>className</code> - Additional CSS classes</li>
-            </ul>
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse">
+              <thead>
+                <tr className="border-b">
+                  <th className="py-3 px-4 text-left">Prop</th>
+                  <th className="py-3 px-4 text-left">Type</th>
+                  <th className="py-3 px-4 text-left">Default</th>
+                  <th className="py-3 px-4 text-left">Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="border-b">
+                  <td className="py-3 px-4 align-top font-mono text-sm">checked</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">boolean</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">false</td>
+                  <td className="py-3 px-4 align-top text-sm">Whether the switch is checked</td>
+                </tr>
+                <tr className="border-b">
+                  <td className="py-3 px-4 align-top font-mono text-sm">onCheckedChange</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">(checked: boolean) => void</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">-</td>
+                  <td className="py-3 px-4 align-top text-sm">Function called when the switch state changes</td>
+                </tr>
+                <tr className="border-b">
+                  <td className="py-3 px-4 align-top font-mono text-sm">disabled</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">boolean</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">false</td>
+                  <td className="py-3 px-4 align-top text-sm">Whether the switch is disabled</td>
+                </tr>
+                <tr className="border-b">
+                  <td className="py-3 px-4 align-top font-mono text-sm">label</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">string</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">-</td>
+                  <td className="py-3 px-4 align-top text-sm">Optional label text</td>
+                </tr>
+                <tr>
+                  <td className="py-3 px-4 align-top font-mono text-sm">className</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">string</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">-</td>
+                  <td className="py-3 px-4 align-top text-sm">Additional CSS classes</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

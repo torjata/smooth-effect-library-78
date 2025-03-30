@@ -15,7 +15,7 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
         className={cn(
           "rounded-lg border p-4 transition-all duration-300",
           glass && "bg-gradient-to-br from-card/60 to-background/60 backdrop-blur-sm border-white/10 dark:border-white/5",
-          hover && "hover:-translate-y-1 hover:shadow-sm",
+          hover && "hover:shadow-sm", // Removed translate animation
           className
         )}
         {...props}

@@ -30,7 +30,7 @@ export function DocsLayout({ children }: DocsLayoutProps) {
     { href: "/docs/stepper", label: "Stepper" },
     { href: "/docs/toast", label: "Toast" },
     { href: "/docs/skeleton", label: "Skeleton" },
-  ]
+  ];
   
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-background to-background/80">

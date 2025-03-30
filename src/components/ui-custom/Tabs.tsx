@@ -1,6 +1,7 @@
 
 import { cn } from "@/lib/utils";
 import React, { createContext, useContext, useState } from "react";
+import { motion } from "framer-motion";
 
 interface TabsContextValue {
   value: string;
@@ -54,7 +55,7 @@ interface TabsListProps {
 
 function TabsList({ children, className }: TabsListProps) {
   return (
-    <div className={cn("inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground", className)}>
+    <div className={cn("relative inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground", className)}>
       {children}
     </div>
   );
@@ -84,16 +85,24 @@ function TabsTrigger({ value, disabled, children, className }: TabsTriggerProps)
       aria-selected={isSelected}
       disabled={disabled}
       className={cn(
-        "inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
-        {
-          "bg-background text-foreground shadow-sm": isSelected,
-          "hover:bg-muted/50": !isSelected,
-        },
+        "relative inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
         className
       )}
       onClick={() => onValueChange(value)}
     >
-      {children}
+      {isSelected && (
+        <motion.span
+          layoutId="tab-indicator"
+          className="absolute inset-0 bg-background rounded-sm shadow-sm"
+          transition={{ type: "spring", duration: 0.5 }}
+        />
+      )}
+      <span className={cn(
+        "relative z-10 transition-colors duration-200",
+        isSelected ? "text-foreground" : "hover:text-foreground/80"
+      )}>
+        {children}
+      </span>
     </button>
   );
 }
@@ -120,16 +129,19 @@ function TabsContent({ value, forceMount, children, className }: TabsContentProp
   }
   
   return (
-    <div
+    <motion.div
       role="tabpanel"
       hidden={!isSelected}
+      initial={{ opacity: 0, y: 5 }}
+      animate={{ opacity: isSelected ? 1 : 0, y: isSelected ? 0 : 5 }}
+      transition={{ duration: 0.2 }}
       className={cn(
         "mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
         className
       )}
     >
       {children}
-    </div>
+    </motion.div>
   );
 }
 

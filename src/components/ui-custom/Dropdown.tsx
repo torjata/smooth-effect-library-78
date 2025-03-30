@@ -31,6 +31,7 @@ export function Dropdown({
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   
   const selectedOption = options.find(option => option.value === value);
   
@@ -46,18 +47,27 @@ export function Dropdown({
       }
     };
     
-    document.addEventListener("mousedown", handleClickOutside);
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [isOpen]);
+  
+  useEffect(() => {
+    if (isOpen && withSearch && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isOpen, withSearch]);
   
   return (
     <div className={cn("relative", className)} ref={dropdownRef}>
       <motion.button
         type="button"
         className={cn(
-          "glassmorphism relative flex h-10 w-full items-center justify-between rounded-md border bg-transparent px-3 py-2 text-sm placeholder:text-muted-foreground focus:outline-none",
+          "glassmorphism relative flex h-10 w-full items-center justify-between rounded-md border bg-transparent px-3 py-2 text-sm placeholder:text-muted-foreground focus:outline-none transition-colors duration-200",
           { "cursor-not-allowed opacity-50": disabled }
         )}
         onClick={() => !disabled && setIsOpen(!isOpen)}
@@ -83,6 +93,7 @@ export function Dropdown({
               <div className="flex items-center border-b p-2">
                 <Search className="mr-2 h-4 w-4 text-muted-foreground" />
                 <input
+                  ref={inputRef}
                   type="text"
                   className="flex-1 bg-transparent text-sm outline-none"
                   placeholder="Search..."
@@ -92,13 +103,13 @@ export function Dropdown({
                 />
               </div>
             )}
-            <div className="overflow-y-auto p-1">
+            <div className="overflow-y-auto p-1 max-h-52">
               {filteredOptions.length > 0 ? (
                 filteredOptions.map((option) => (
                   <motion.div
                     key={option.value}
                     className={cn(
-                      "flex cursor-pointer items-center rounded-sm px-2 py-1.5 text-sm",
+                      "flex cursor-pointer items-center rounded-sm px-2 py-1.5 text-sm transition-colors duration-200",
                       option.value === value
                         ? "bg-primary/20 text-foreground"
                         : "text-foreground hover:bg-accent"

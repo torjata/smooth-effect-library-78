@@ -79,7 +79,7 @@ export function Stepper({
               {/* Step Circle */}
               <motion.div
                 className={cn(
-                  "glassmorphism z-10 flex h-7 w-7 items-center justify-center rounded-full border",
+                  "glassmorphism z-10 flex h-7 w-7 items-center justify-center rounded-full border transition-colors duration-200",
                   {
                     "border-primary bg-primary text-primary-foreground": isActive || isCompleted,
                     "border-muted bg-background": !isActive && !isCompleted,
@@ -91,7 +91,7 @@ export function Stepper({
                 }}
               >
                 {isCompleted ? (
-                  <Check className="h-3.5 w-3.5" />
+                  <Check className="h-3.5 w-3.5 text-background dark:text-foreground" />
                 ) : (
                   <span className="text-xs font-medium">{index + 1}</span>
                 )}
@@ -105,13 +105,22 @@ export function Stepper({
                 )}
               >
                 <div className={cn(
-                  "text-sm font-medium",
-                  isActive ? "text-foreground" : "text-muted-foreground"
+                  "text-sm font-medium transition-colors duration-200",
+                  isActive 
+                    ? "text-foreground" 
+                    : isCompleted 
+                      ? "text-foreground/80"
+                      : "text-muted-foreground"
                 )}>
                   {step.title}
                 </div>
                 {step.description && (
-                  <div className="mt-0.5 text-xs text-muted-foreground">
+                  <div className={cn(
+                    "mt-0.5 text-xs transition-colors duration-200",
+                    isActive || isCompleted 
+                      ? "text-muted-foreground" 
+                      : "text-muted-foreground/70"
+                  )}>
                     {step.description}
                   </div>
                 )}

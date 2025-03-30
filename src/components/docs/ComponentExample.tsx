@@ -1,6 +1,7 @@
 
-import React, { useState } from "react";
-import { cn } from "@/lib/utils";
+import React, { useState } from 'react';
+import { CopyToClipboard } from "@/components/docs/CopyToClipboard";
+import { Button } from "@/components/ui-custom/Button";
 import { Code } from "lucide-react";
 
 interface ComponentExampleProps {
@@ -12,47 +13,54 @@ interface ComponentExampleProps {
 export function ComponentExample({ title, children, className }: ComponentExampleProps) {
   const [showCode, setShowCode] = useState(false);
   
-  // Find the example and code components
+  // Find the actual component and the code block
   const childrenArray = React.Children.toArray(children);
-  const exampleContent = childrenArray.filter(child => 
-    React.isValidElement(child) && child.type !== ComponentCode
+  const codeBlock = childrenArray.find(
+    (child) => React.isValidElement(child) && child.type === ComponentCode
   );
-  const codeContent = childrenArray.find(child => 
-    React.isValidElement(child) && child.type === ComponentCode
+  const example = childrenArray.filter(
+    (child) => !(React.isValidElement(child) && child.type === ComponentCode)
   );
-  
+
   return (
-    <div className={cn("rounded-lg border border-border/60", className)}>
-      <div className="border-b border-border/60 p-4">
-        <div className="flex items-center justify-between">
-          <h2 className="font-medium">{title}</h2>
-          <button 
-            onClick={() => setShowCode(!showCode)}
-            className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <Code size={16} />
-            <span>{showCode ? "Hide code" : "Show code"}</span>
-          </button>
-        </div>
+    <div className={`border rounded-lg overflow-hidden bg-card/30 ${className}`}>
+      <div className="flex items-center justify-between border-b p-4">
+        <h3 className="text-lg font-medium">{title}</h3>
+        <Button 
+          variant="ghost" 
+          size="sm" 
+          onClick={() => setShowCode(!showCode)}
+          className="flex items-center gap-2"
+        >
+          <Code className="h-4 w-4" />
+          {showCode ? "Hide Code" : "Show Code"}
+        </Button>
       </div>
       
-      <div className="p-6 flex flex-col gap-6">
-        {exampleContent}
+      <div className="p-6">
+        {example}
       </div>
       
-      {showCode && codeContent && (
-        <div className="border-t border-border/60 p-4 bg-muted/50 rounded-b-lg overflow-auto max-h-80">
-          {codeContent}
+      {showCode && codeBlock && (
+        <div className="border-t bg-muted/50 p-4 relative">
+          <CopyToClipboard 
+            value={React.isValidElement(codeBlock) ? 
+              codeBlock.props.children as string : ""} 
+            className="absolute top-4 right-4" 
+          />
+          <pre className="text-sm overflow-x-auto p-2 rounded-md bg-muted/30">
+            {codeBlock}
+          </pre>
         </div>
       )}
     </div>
   );
 }
 
-export function ComponentCode({ children }: { children: React.ReactNode }) {
-  return (
-    <pre className="text-sm p-4 bg-muted/30 rounded-md overflow-auto">
-      <code>{children}</code>
-    </pre>
-  );
+interface ComponentCodeProps {
+  children: string;
+}
+
+export function ComponentCode({ children }: ComponentCodeProps) {
+  return <>{children}</>;
 }

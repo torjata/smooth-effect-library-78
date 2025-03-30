@@ -63,14 +63,43 @@ export default function InputDoc() {
         <div className="mt-10 space-y-4">
           <h2 className="text-2xl font-bold">API Reference</h2>
           
-          <div>
-            <h3 className="text-xl font-semibold">Props</h3>
-            <ul className="list-disc pl-6 mt-2 space-y-2">
-              <li><code>label</code> - Optional label text for the input</li>
-              <li><code>icon</code> - Optional icon component to display inside the input</li>
-              <li><code>error</code> - Optional error message to display</li>
-              <li><code>...InputHTMLAttributes</code> - All standard HTML input attributes</li>
-            </ul>
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse">
+              <thead>
+                <tr className="border-b">
+                  <th className="py-3 px-4 text-left">Prop</th>
+                  <th className="py-3 px-4 text-left">Type</th>
+                  <th className="py-3 px-4 text-left">Default</th>
+                  <th className="py-3 px-4 text-left">Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="border-b">
+                  <td className="py-3 px-4 align-top font-mono text-sm">label</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">string</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">-</td>
+                  <td className="py-3 px-4 align-top text-sm">Optional label text for the input</td>
+                </tr>
+                <tr className="border-b">
+                  <td className="py-3 px-4 align-top font-mono text-sm">icon</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">React.ReactNode</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">-</td>
+                  <td className="py-3 px-4 align-top text-sm">Optional icon to display inside the input</td>
+                </tr>
+                <tr className="border-b">
+                  <td className="py-3 px-4 align-top font-mono text-sm">error</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">string</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">-</td>
+                  <td className="py-3 px-4 align-top text-sm">Error message to display below the input</td>
+                </tr>
+                <tr>
+                  <td className="py-3 px-4 align-top font-mono text-sm">...rest</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">InputHTMLAttributes</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">-</td>
+                  <td className="py-3 px-4 align-top text-sm">All standard HTML input attributes</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

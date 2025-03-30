@@ -19,10 +19,6 @@ interface ToastProviderProps {
   children: React.ReactNode;
 }
 
-interface ToastContentProps extends ToastProps {}
-
-let toastCount = 0;
-
 // Toast Context
 const ToastContext = React.createContext<{
   toasts: ToastProps[];
@@ -35,16 +31,17 @@ const ToastContext = React.createContext<{
 });
 
 // Toast Content Component
-const ToastContent = ({
+const ToastContent = React.forwardRef<HTMLDivElement, ToastProps>(({
   id,
   title,
   description,
   action,
   type = "default",
   onClose,
-}: ToastContentProps) => {
+}, ref) => {
   return (
     <motion.div
+      ref={ref}
       layout
       initial={{ opacity: 0, y: 50, scale: 0.8 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -73,7 +70,9 @@ const ToastContent = ({
       </button>
     </motion.div>
   );
-};
+});
+
+ToastContent.displayName = "ToastContent";
 
 // Toast Provider
 export const ToastProvider = ({ children }: ToastProviderProps) => {
@@ -86,7 +85,7 @@ export const ToastProvider = ({ children }: ToastProviderProps) => {
   }, []);
 
   const addToast = (toast: Omit<ToastProps, "id" | "onClose">) => {
-    const id = String(toastCount++);
+    const id = String(Date.now());
     const newToast: ToastProps = {
       ...toast,
       id,

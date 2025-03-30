@@ -1,6 +1,7 @@
 
 import { cn } from "@/lib/utils";
 import { useState } from "react";
+import { motion } from "framer-motion";
 
 interface SwitchProps {
   checked?: boolean;
@@ -36,7 +37,7 @@ export function Switch({
         disabled={disabled}
         onClick={handleToggle}
         className={cn(
-          "group relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+          "group relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
           isChecked 
             ? "bg-gradient-to-r from-primary to-primary/80" 
             : "bg-gradient-to-r from-muted to-muted/80",
@@ -44,22 +45,26 @@ export function Switch({
           className
         )}
       >
-        <span
+        <motion.span
+          layout
           className={cn(
-            "pointer-events-none block h-5 w-5 rounded-full bg-background transition-transform duration-200 shadow-sm",
+            "pointer-events-none block h-5 w-5 rounded-full bg-background transition-all duration-200 shadow-sm",
             disabled ? "opacity-50" : ""
           )}
-          style={{ 
-            transform: isChecked ? "translateX(calc(100% - 0.25rem))" : "translateX(0.25rem)"
+          initial={false}
+          animate={{ 
+            x: isChecked ? "calc(100% - 2px)" : "2px"
           }}
+          transition={{ type: "spring", stiffness: 500, damping: 30 }}
         />
       </button>
       {label && (
         <label
           className={cn(
-            "ml-2 text-sm font-medium leading-none",
+            "ml-2 text-sm font-medium leading-none cursor-pointer",
             disabled && "cursor-not-allowed opacity-70"
           )}
+          onClick={!disabled ? handleToggle : undefined}
         >
           {label}
         </label>
