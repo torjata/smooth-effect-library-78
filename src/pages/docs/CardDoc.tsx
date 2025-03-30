@@ -1,10 +1,8 @@
-
 import { Button } from "@/components/ui-custom/Button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui-custom/Card";
 import { Badge } from "@/components/ui-custom/Badge";
 import { DocsLayout } from "@/components/docs/DocsLayout";
-import { ComponentExample } from "@/components/docs/ComponentExample";
-import { ComponentCode } from "@/components/docs/ComponentCode";
+import { ComponentExample, ComponentCode } from "@/components/docs/ComponentExample";
 
 export default function CardDoc() {
   return (

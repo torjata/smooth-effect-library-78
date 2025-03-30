@@ -1,9 +1,7 @@
-
 import { Button } from "@/components/ui-custom/Button";
 import { DocsLayout } from "@/components/docs/DocsLayout";
 import { Check, Heart, Mail, Search } from "lucide-react";
-import { ComponentExample } from "@/components/docs/ComponentExample";
-import { ComponentCode } from "@/components/docs/ComponentCode";
+import { ComponentExample, ComponentCode } from "@/components/docs/ComponentExample";
 
 export default function ButtonDoc() {
   return (

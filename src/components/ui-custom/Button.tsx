@@ -7,6 +7,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   size?: "sm" | "md" | "lg" | "icon";
   isLoading?: boolean;
   ripple?: boolean;
+  asChild?: boolean; // Add the asChild property
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -16,6 +17,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     size = "md", 
     isLoading = false, 
     ripple = true,
+    asChild = false, // Add default value
     children, 
     onClick,
     ...props 
@@ -37,6 +39,8 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       onClick?.(e);
     };
 
+    // The asChild prop is not actually used in the implementation,
+    // but we need to accept it for compatibility with the shadcn Button
     return (
       <button
         ref={ref}
