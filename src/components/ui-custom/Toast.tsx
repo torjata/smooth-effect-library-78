@@ -1,10 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
-import { useToast as useToastHook } from '@/hooks/use-toast';
+import { useToast as useToastHook, ToastType } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
-
-export type ToastType = 'default' | 'success' | 'error' | 'warning' | 'info';
 
 interface ToastProps {
   title?: React.ReactNode;
@@ -102,7 +100,7 @@ export function ToastProvider({ children }: ToastProviderProps) {
             id={toast.id}
             title={toast.title}
             description={toast.description}
-            type={toast.type as ToastType}
+            type={toast.type}
             onClose={toast.onOpenChange ? () => toast.onOpenChange?.(false) : undefined}
           />
         ))}
