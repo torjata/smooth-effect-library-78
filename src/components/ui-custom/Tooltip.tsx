@@ -50,37 +50,40 @@ export function Tooltip({
     let x = 0;
     let y = 0;
     
+    // Calculate position based on side
     switch (side) {
       case "top":
-        x = rect.left + rect.width / 2;
-        y = rect.top - sideOffset;
+        x = rect.left + (rect.width / 2);
+        y = rect.top - sideOffset - (tooltipHeight > 0 ? tooltipHeight : 0);
         break;
       case "bottom":
-        x = rect.left + rect.width / 2;
+        x = rect.left + (rect.width / 2);
         y = rect.bottom + sideOffset;
         break;
       case "left":
-        x = rect.left - sideOffset;
-        y = rect.top + rect.height / 2;
+        x = rect.left - sideOffset - (tooltipWidth > 0 ? tooltipWidth : 0);
+        y = rect.top + (rect.height / 2);
         break;
       case "right":
         x = rect.right + sideOffset;
-        y = rect.top + rect.height / 2;
+        y = rect.top + (rect.height / 2);
         break;
     }
     
-    // Adjust alignment
-    if (align === "start") {
+    // Apply alignment adjustments
+    if (tooltipWidth > 0 && tooltipHeight > 0) {
       if (side === "top" || side === "bottom") {
-        x = rect.left;
+        if (align === "start") {
+          x = rect.left;
+        } else if (align === "end") {
+          x = rect.right;
+        }
       } else if (side === "left" || side === "right") {
-        y = rect.top;
-      }
-    } else if (align === "end") {
-      if (side === "top" || side === "bottom") {
-        x = rect.right;
-      } else if (side === "left" || side === "right") {
-        y = rect.bottom;
+        if (align === "start") {
+          y = rect.top;
+        } else if (align === "end") {
+          y = rect.bottom;
+        }
       }
     }
     
@@ -89,9 +92,15 @@ export function Tooltip({
   
   const handleMouseEnter = () => {
     if (!isMounted) return;
-    calculatePosition();
+    
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    
     timeoutRef.current = window.setTimeout(() => {
       setIsOpen(true);
+      // Calculate position after tooltip is visible to get correct dimensions
+      requestAnimationFrame(() => calculatePosition());
     }, delayDuration);
   };
   
@@ -103,6 +112,7 @@ export function Tooltip({
     setIsOpen(false);
   };
   
+  // Clone the child element with our event handlers
   const triggerChild = React.cloneElement(children, {
     ref: childRef,
     onMouseEnter: (e: any) => {
@@ -132,7 +142,7 @@ export function Tooltip({
     switch (side) {
       case 'top':
         styles.left = position.x;
-        styles.bottom = window.innerHeight - position.y;
+        styles.top = position.y;
         styles.transform = 'translateX(-50%)';
         break;
       case 'bottom':
@@ -141,7 +151,7 @@ export function Tooltip({
         styles.transform = 'translateX(-50%)';
         break;
       case 'left':
-        styles.right = window.innerWidth - position.x;
+        styles.left = position.x;
         styles.top = position.y;
         styles.transform = 'translateY(-50%)';
         break;
@@ -152,12 +162,12 @@ export function Tooltip({
         break;
     }
     
-    // Adjust alignment
+    // Apply alignment adjustments to transform
     if (align === "start") {
       if (side === 'top' || side === 'bottom') {
-        styles.transform = '';
+        styles.transform = 'translateX(0)';
       } else if (side === 'left' || side === 'right') {
-        styles.transform = '';
+        styles.transform = 'translateY(0)';
       }
     } else if (align === "end") {
       if (side === 'top' || side === 'bottom') {
@@ -206,7 +216,7 @@ export function Tooltip({
   return (
     <>
       {triggerChild}
-      {isMounted && isOpen && createPortal(
+      {isMounted && createPortal(
         <AnimatePresence>
           {isOpen && (
             <motion.div
@@ -218,6 +228,9 @@ export function Tooltip({
               style={getPositionStyles()}
               {...getAnimation()}
               transition={{ duration: 0.15 }}
+              onAnimationComplete={() => {
+                if (isOpen) calculatePosition();
+              }}
             >
               {content}
             </motion.div>
