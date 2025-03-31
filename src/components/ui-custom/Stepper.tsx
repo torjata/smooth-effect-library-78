@@ -49,7 +49,7 @@ export function Stepper({
             {!isLast && (
               <div
                 className={cn(
-                  "absolute bg-border dark:bg-border",
+                  "absolute bg-border",
                   isVertical
                     ? "left-3.5 top-10 h-full w-px"
                     : "left-0 right-0 top-3.5 h-px w-full",
@@ -79,10 +79,10 @@ export function Stepper({
               {/* Step Circle */}
               <motion.div
                 className={cn(
-                  "z-10 flex h-7 w-7 items-center justify-center rounded-full border transition-colors duration-200",
+                  "glassmorphism z-10 flex h-7 w-7 items-center justify-center rounded-full border transition-colors duration-200",
                   {
-                    "border-primary bg-primary text-primary-foreground shadow-sm": isActive || isCompleted,
-                    "border-border bg-background shadow-sm": !isActive && !isCompleted,
+                    "border-primary bg-primary text-primary-foreground": isActive || isCompleted,
+                    "border-muted bg-background": !isActive && !isCompleted,
                   }
                 )}
                 animate={{

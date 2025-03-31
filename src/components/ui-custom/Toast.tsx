@@ -90,7 +90,6 @@ export const ToastProvider = ({ children }: ToastProviderProps) => {
       ...toast,
       id,
       onClose: removeToast,
-      duration: toast.duration || 5000,
     };
 
     setToasts((prev) => [...prev, newToast]);
@@ -112,7 +111,7 @@ export const ToastProvider = ({ children }: ToastProviderProps) => {
     <ToastContext.Provider value={{ toasts, addToast, removeToast }}>
       {children}
       {createPortal(
-        <div className="fixed bottom-0 right-0 z-[100] flex flex-col gap-2 p-4 sm:bottom-auto sm:right-4 sm:top-4 sm:max-w-sm">
+        <div className="fixed bottom-0 right-0 z-50 flex flex-col gap-2 p-4 sm:bottom-auto sm:right-4 sm:top-4 sm:max-w-sm">
           <AnimatePresence mode="popLayout">
             {toasts.map((toast) => (
               <ToastContent key={toast.id} {...toast} />
