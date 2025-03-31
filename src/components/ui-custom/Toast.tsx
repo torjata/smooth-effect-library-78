@@ -1,134 +1,110 @@
 
-import React, { useEffect, useState } from "react";
-import { cn } from "@/lib/utils";
-import { X } from "lucide-react";
-import { AnimatePresence, motion } from "framer-motion";
-import { createPortal } from "react-dom";
+import React, { useState, useEffect } from 'react';
+import { X } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
+import { cn } from '@/lib/utils';
 
-export interface ToastProps {
-  id: string;
+interface ToastProps {
   title?: string;
   description?: string;
-  action?: React.ReactNode;
-  type?: "default" | "success" | "error" | "warning" | "info";
+  type?: 'default' | 'success' | 'error' | 'warning' | 'info';
   duration?: number;
-  onClose: (id: string) => void;
+  onClose?: () => void;
+  id?: string;
+  className?: string;
+}
+
+export function Toast({ 
+  title, 
+  description, 
+  type = 'default', 
+  duration = 3000, 
+  onClose,
+  id,
+  className 
+}: ToastProps) {
+  const [visible, setVisible] = useState(true);
+  
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setVisible(false);
+      setTimeout(() => onClose?.(), 300); // Allow animation to complete
+    }, duration);
+    
+    return () => clearTimeout(timer);
+  }, [duration, onClose]);
+
+  const typeStyles = {
+    default: 'bg-popover border-border',
+    success: 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800',
+    error: 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800',
+    warning: 'bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800',
+    info: 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800',
+  };
+  
+  const typeIcon = {
+    default: null,
+    success: <div className="h-2 w-2 rounded-full bg-green-500"></div>,
+    error: <div className="h-2 w-2 rounded-full bg-red-500"></div>,
+    warning: <div className="h-2 w-2 rounded-full bg-amber-500"></div>,
+    info: <div className="h-2 w-2 rounded-full bg-blue-500"></div>,
+  };
+
+  return (
+    <div 
+      className={cn(
+        'fixed right-4 max-w-md rounded-lg border shadow-md transition-all duration-300 z-50',
+        typeStyles[type],
+        visible ? 'opacity-100' : 'opacity-0 translate-y-2',
+        className
+      )}
+    >
+      <div className="flex items-start p-4">
+        {typeIcon[type] && (
+          <div className="flex-shrink-0 pt-1.5 mr-3">
+            {typeIcon[type]}
+          </div>
+        )}
+        <div className="flex-1 pt-0.5">
+          {title && <h3 className="text-sm font-medium">{title}</h3>}
+          {description && <div className="mt-1 text-sm text-muted-foreground">{description}</div>}
+        </div>
+        <button 
+          className="ml-4 flex-shrink-0 rounded-full p-1 text-muted-foreground hover:text-foreground"
+          onClick={() => {
+            setVisible(false);
+            setTimeout(() => onClose?.(), 300);
+          }}
+        >
+          <X className="h-4 w-4" />
+        </button>
+      </div>
+    </div>
+  );
 }
 
 interface ToastProviderProps {
   children: React.ReactNode;
 }
 
-// Toast Context
-const ToastContext = React.createContext<{
-  toasts: ToastProps[];
-  addToast: (toast: Omit<ToastProps, "id" | "onClose">) => void;
-  removeToast: (id: string) => void;
-}>({
-  toasts: [],
-  addToast: () => {},
-  removeToast: () => {},
-});
-
-// Toast Content Component
-const ToastContent = React.forwardRef<HTMLDivElement, ToastProps>(({
-  id,
-  title,
-  description,
-  action,
-  type = "default",
-  onClose,
-}, ref) => {
-  return (
-    <motion.div
-      ref={ref}
-      layout
-      initial={{ opacity: 0, y: 50, scale: 0.8 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      exit={{ opacity: 0, y: 20, scale: 0.8 }}
-      className={cn(
-        "glassmorphism pointer-events-auto flex w-full max-w-sm items-start gap-3 rounded-lg border p-4 shadow-lg",
-        {
-          "bg-white/10 dark:bg-black/20": type === "default",
-          "bg-green-500/10 border-green-500/20": type === "success",
-          "bg-red-500/10 border-red-500/20": type === "error",
-          "bg-yellow-500/10 border-yellow-500/20": type === "warning",
-          "bg-blue-500/10 border-blue-500/20": type === "info",
-        }
-      )}
-    >
-      <div className="flex-1">
-        {title && <h4 className="mb-1 font-medium">{title}</h4>}
-        {description && <p className="text-sm opacity-90">{description}</p>}
-        {action && <div className="mt-3">{action}</div>}
-      </div>
-      <button
-        onClick={() => onClose(id)}
-        className="shrink-0 rounded-md p-1 text-foreground/50 opacity-70 transition-opacity hover:opacity-100"
-      >
-        <X className="h-4 w-4" />
-      </button>
-    </motion.div>
-  );
-});
-
-ToastContent.displayName = "ToastContent";
-
-// Toast Provider
-export const ToastProvider = ({ children }: ToastProviderProps) => {
-  const [toasts, setToasts] = useState<ToastProps[]>([]);
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-    return () => setIsMounted(false);
-  }, []);
-
-  const addToast = (toast: Omit<ToastProps, "id" | "onClose">) => {
-    const id = String(Date.now());
-    const newToast: ToastProps = {
-      ...toast,
-      id,
-      onClose: removeToast,
-    };
-
-    setToasts((prev) => [...prev, newToast]);
-
-    if (toast.duration !== Infinity) {
-      setTimeout(() => {
-        removeToast(id);
-      }, toast.duration || 5000);
-    }
-  };
-
-  const removeToast = (id: string) => {
-    setToasts((prev) => prev.filter((toast) => toast.id !== id));
-  };
-
-  if (!isMounted) return <>{children}</>;
+export function ToastProvider({ children }: ToastProviderProps) {
+  const { toasts } = useToast();
 
   return (
-    <ToastContext.Provider value={{ toasts, addToast, removeToast }}>
+    <>
       {children}
-      {createPortal(
-        <div className="fixed bottom-0 right-0 z-50 flex flex-col gap-2 p-4 sm:bottom-auto sm:right-4 sm:top-4 sm:max-w-sm">
-          <AnimatePresence mode="popLayout">
-            {toasts.map((toast) => (
-              <ToastContent key={toast.id} {...toast} />
-            ))}
-          </AnimatePresence>
-        </div>,
-        document.body
-      )}
-    </ToastContext.Provider>
+      <div className="fixed bottom-0 right-0 z-50 p-4 flex flex-col gap-2 items-end max-h-screen overflow-hidden">
+        {toasts.map(toast => (
+          <Toast
+            key={toast.id}
+            id={toast.id}
+            title={toast.title}
+            description={toast.description}
+            type={toast.type as any}
+            onClose={toast.onOpenChange ? () => toast.onOpenChange?.(false) : undefined}
+          />
+        ))}
+      </div>
+    </>
   );
-};
-
-// Hook to use toast
-export const useToast = () => {
-  const context = React.useContext(ToastContext);
-  if (!context) {
-    throw new Error("useToast must be used within a ToastProvider");
-  }
-  return context;
-};
+}

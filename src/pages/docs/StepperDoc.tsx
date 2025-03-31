@@ -2,59 +2,50 @@
 import { DocsLayout } from "@/components/docs/DocsLayout";
 import { ComponentExample } from "@/components/docs/ComponentExample";
 import { ComponentCode } from "@/components/docs/ComponentExample";
-import { Stepper } from "@/components/ui-custom/Stepper";
 import { useState } from "react";
 import { Button } from "@/components/ui-custom/Button";
+import { Stepper, StepperStep } from "@/components/ui-custom/Stepper";
 
 export default function StepperDoc() {
   const [activeStep, setActiveStep] = useState(1);
-  
-  const horizontalSteps = [
-    { title: "Account", description: "Personal information" },
-    { title: "Address", description: "Shipping address" },
-    { title: "Payment", description: "Payment details" },
-    { title: "Review", description: "Confirm order" }
-  ];
-  
-  const verticalSteps = [
-    { title: "Step 1", description: "Create account" },
-    { title: "Step 2", description: "Setup profile" },
-    { title: "Step 3", description: "Enable notifications" }
-  ];
-  
-  const nextStep = () => {
-    setActiveStep(prev => Math.min(prev + 1, horizontalSteps.length - 1));
+
+  const handleNext = () => {
+    setActiveStep((prev) => Math.min(prev + 1, 3));
   };
-  
-  const prevStep = () => {
-    setActiveStep(prev => Math.max(prev - 1, 0));
+
+  const handlePrev = () => {
+    setActiveStep((prev) => Math.max(prev - 1, 0));
   };
-  
+
   return (
     <DocsLayout>
       <div className="space-y-6">
         <div>
           <h1 className="text-3xl font-bold">Stepper</h1>
           <p className="text-muted-foreground mt-2">
-            Visual indicator for multi-step processes and workflows.
+            Multi-step processes with visual progress tracking.
           </p>
         </div>
 
-        <ComponentExample title="Horizontal Stepper">
-          <div className="space-y-8">
-            <Stepper steps={horizontalSteps} activeStep={activeStep} />
-            
-            <div className="flex justify-between">
+        <ComponentExample title="Basic Stepper">
+          <div className="w-full max-w-2xl">
+            <Stepper activeStep={activeStep}>
+              <StepperStep step={0} label="Step 1" description="Personal information" />
+              <StepperStep step={1} label="Step 2" description="Contact details" />
+              <StepperStep step={2} label="Step 3" description="Review information" />
+              <StepperStep step={3} label="Complete" description="Process completed" />
+            </Stepper>
+            <div className="mt-8 flex justify-between">
               <Button 
                 variant="outline" 
-                onClick={prevStep}
+                onClick={handlePrev}
                 disabled={activeStep === 0}
               >
                 Previous
               </Button>
               <Button 
-                onClick={nextStep}
-                disabled={activeStep === horizontalSteps.length - 1}
+                onClick={handleNext}
+                disabled={activeStep === 3}
               >
                 Next
               </Button>
@@ -62,54 +53,36 @@ export default function StepperDoc() {
           </div>
           <ComponentCode>
 {`const [activeStep, setActiveStep] = useState(1);
-  
-const steps = [
-  { title: "Account", description: "Personal information" },
-  { title: "Address", description: "Shipping address" },
-  { title: "Payment", description: "Payment details" },
-  { title: "Review", description: "Confirm order" }
-];
 
-<Stepper steps={steps} activeStep={activeStep} />
+const handleNext = () => {
+  setActiveStep((prev) => Math.min(prev + 1, 3));
+};
 
-<div className="flex justify-between">
+const handlePrev = () => {
+  setActiveStep((prev) => Math.max(prev - 1, 0));
+};
+
+<Stepper activeStep={activeStep}>
+  <StepperStep step={0} label="Step 1" description="Personal information" />
+  <StepperStep step={1} label="Step 2" description="Contact details" />
+  <StepperStep step={2} label="Step 3" description="Review information" />
+  <StepperStep step={3} label="Complete" description="Process completed" />
+</Stepper>
+<div className="mt-8 flex justify-between">
   <Button 
     variant="outline" 
-    onClick={() => setActiveStep(prev => Math.max(prev - 1, 0))}
+    onClick={handlePrev}
     disabled={activeStep === 0}
   >
     Previous
   </Button>
   <Button 
-    onClick={() => setActiveStep(prev => Math.min(prev + 1, steps.length - 1))}
-    disabled={activeStep === steps.length - 1}
+    onClick={handleNext}
+    disabled={activeStep === 3}
   >
     Next
   </Button>
 </div>`}
-          </ComponentCode>
-        </ComponentExample>
-
-        <ComponentExample title="Vertical Stepper">
-          <div className="py-4">
-            <Stepper 
-              steps={verticalSteps} 
-              activeStep={1} 
-              orientation="vertical" 
-            />
-          </div>
-          <ComponentCode>
-{`const steps = [
-  { title: "Step 1", description: "Create account" },
-  { title: "Step 2", description: "Setup profile" },
-  { title: "Step 3", description: "Enable notifications" }
-];
-
-<Stepper 
-  steps={steps} 
-  activeStep={1} 
-  orientation="vertical" 
-/>`}
           </ComponentCode>
         </ComponentExample>
 
@@ -130,22 +103,16 @@ const steps = [
                 </thead>
                 <tbody>
                   <tr className="border-b">
-                    <td className="py-3 px-4 align-top font-mono text-sm">steps</td>
-                    <td className="py-3 px-4 align-top font-mono text-sm">StepObject[]</td>
-                    <td className="py-3 px-4 align-top font-mono text-sm">-</td>
-                    <td className="py-3 px-4 align-top text-sm">Array of step objects with title and optional description</td>
-                  </tr>
-                  <tr className="border-b">
                     <td className="py-3 px-4 align-top font-mono text-sm">activeStep</td>
                     <td className="py-3 px-4 align-top font-mono text-sm">number</td>
                     <td className="py-3 px-4 align-top font-mono text-sm">0</td>
-                    <td className="py-3 px-4 align-top text-sm">Index of the current active step</td>
+                    <td className="py-3 px-4 align-top text-sm">Current active step</td>
                   </tr>
                   <tr className="border-b">
                     <td className="py-3 px-4 align-top font-mono text-sm">orientation</td>
                     <td className="py-3 px-4 align-top font-mono text-sm">"horizontal" | "vertical"</td>
                     <td className="py-3 px-4 align-top font-mono text-sm">"horizontal"</td>
-                    <td className="py-3 px-4 align-top text-sm">Layout orientation of the stepper</td>
+                    <td className="py-3 px-4 align-top text-sm">Layout orientation</td>
                   </tr>
                   <tr>
                     <td className="py-3 px-4 align-top font-mono text-sm">className</td>
@@ -157,31 +124,47 @@ const steps = [
               </table>
             </div>
             
-            <h3 className="text-xl font-semibold mt-6">Step Object</h3>
+            <h3 className="text-xl font-semibold mt-6">StepperStep Props</h3>
             <div className="overflow-x-auto">
               <table className="w-full border-collapse">
                 <thead>
                   <tr className="border-b">
-                    <th className="py-3 px-4 text-left">Property</th>
+                    <th className="py-3 px-4 text-left">Prop</th>
                     <th className="py-3 px-4 text-left">Type</th>
+                    <th className="py-3 px-4 text-left">Default</th>
                     <th className="py-3 px-4 text-left">Description</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr className="border-b">
-                    <td className="py-3 px-4 align-top font-mono text-sm">title</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">step</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">number</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">required</td>
+                    <td className="py-3 px-4 align-top text-sm">Step index</td>
+                  </tr>
+                  <tr className="border-b">
+                    <td className="py-3 px-4 align-top font-mono text-sm">label</td>
                     <td className="py-3 px-4 align-top font-mono text-sm">string</td>
-                    <td className="py-3 px-4 align-top text-sm">Title text for the step</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">-</td>
+                    <td className="py-3 px-4 align-top text-sm">Step label text</td>
                   </tr>
                   <tr className="border-b">
                     <td className="py-3 px-4 align-top font-mono text-sm">description</td>
                     <td className="py-3 px-4 align-top font-mono text-sm">string</td>
-                    <td className="py-3 px-4 align-top text-sm">Optional description text</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">-</td>
+                    <td className="py-3 px-4 align-top text-sm">Step description text</td>
                   </tr>
-                  <tr>
+                  <tr className="border-b">
                     <td className="py-3 px-4 align-top font-mono text-sm">icon</td>
                     <td className="py-3 px-4 align-top font-mono text-sm">ReactNode</td>
-                    <td className="py-3 px-4 align-top text-sm">Optional custom icon for the step</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">-</td>
+                    <td className="py-3 px-4 align-top text-sm">Custom icon for the step</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3 px-4 align-top font-mono text-sm">className</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">string</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">-</td>
+                    <td className="py-3 px-4 align-top text-sm">Additional CSS classes</td>
                   </tr>
                 </tbody>
               </table>

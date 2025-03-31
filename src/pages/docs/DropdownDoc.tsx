@@ -59,11 +59,11 @@ export default function DropdownDoc() {
             <div className="relative" ref={dropdownRef1}>
               <Button onClick={() => setIsOpen1(!isOpen1)}>
                 Options
-                <ChevronDown className="h-4 w-4" />
+                <ChevronDown className="h-4 w-4 ml-2" />
               </Button>
               
               {isOpen1 && (
-                <div className="absolute z-[100] mt-2 min-w-[8rem] rounded-md border bg-popover p-1 shadow-md animate-in fade-in-80 slide-in-from-top-1">
+                <div className="absolute z-[1000] mt-2 min-w-[8rem] rounded-md border bg-popover p-1 shadow-md animate-in fade-in-80 slide-in-from-top-1 overflow-visible">
                   <div className="py-1.5 px-2 text-sm cursor-pointer hover:bg-accent hover:text-accent-foreground rounded-sm">Profile</div>
                   <div className="py-1.5 px-2 text-sm cursor-pointer hover:bg-accent hover:text-accent-foreground rounded-sm">Settings</div>
                   <div className="h-px my-1 bg-muted"></div>
@@ -77,7 +77,7 @@ export default function DropdownDoc() {
   <DropdownTrigger>
     <Button>
       Options
-      <ChevronDown className="h-4 w-4" />
+      <ChevronDown className="h-4 w-4 ml-2" />
     </Button>
   </DropdownTrigger>
   <DropdownContent>
@@ -95,11 +95,11 @@ export default function DropdownDoc() {
             <div className="relative" ref={dropdownRef2}>
               <Button onClick={() => setIsOpen2(!isOpen2)}>
                 Account
-                <ChevronDown className="h-4 w-4" />
+                <ChevronDown className="h-4 w-4 ml-2" />
               </Button>
               
               {isOpen2 && (
-                <div className="absolute z-[100] mt-2 min-w-[8rem] rounded-md border bg-popover p-1 shadow-md animate-in fade-in-80 slide-in-from-top-1">
+                <div className="absolute z-[1000] mt-2 min-w-[8rem] rounded-md border bg-popover p-1 shadow-md animate-in fade-in-80 slide-in-from-top-1 overflow-visible">
                   <div className="py-1.5 px-2 text-sm cursor-pointer hover:bg-accent hover:text-accent-foreground rounded-sm flex items-center">
                     <User className="mr-2 h-4 w-4" />
                     <span>Profile</span>
@@ -122,7 +122,7 @@ export default function DropdownDoc() {
   <DropdownTrigger>
     <Button>
       Account
-      <ChevronDown className="h-4 w-4" />
+      <ChevronDown className="h-4 w-4 ml-2" />
     </Button>
   </DropdownTrigger>
   <DropdownContent>
@@ -154,7 +154,7 @@ export default function DropdownDoc() {
               </Button>
               
               {isOpen3 && (
-                <div className="absolute z-[100] mt-2 w-56 rounded-md border bg-popover p-1 shadow-md animate-in fade-in-80 slide-in-from-top-1">
+                <div className="absolute z-[1000] mt-2 w-56 rounded-md border bg-popover p-1 shadow-md animate-in fade-in-80 slide-in-from-top-1 overflow-visible">
                   <div className="px-2 py-1.5 text-xs font-medium">Messages</div>
                   <div className="py-1.5 px-2 text-sm cursor-pointer hover:bg-accent hover:text-accent-foreground rounded-sm flex items-center">
                     <Mail className="mr-2 h-4 w-4" />

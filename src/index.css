@@ -97,4 +97,64 @@
   .gradient-text {
     @apply bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text text-transparent;
   }
+  
+  @keyframes slide-down-fade {
+    from {
+      opacity: 0;
+      transform: translateY(-0.5rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes slide-up-fade {
+    from {
+      opacity: 0;
+      transform: translateY(0.5rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes slide-right-fade {
+    from {
+      opacity: 0;
+      transform: translateX(-0.5rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes slide-left-fade {
+    from {
+      opacity: 0;
+      transform: translateX(0.5rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  .animate-slide-down-fade {
+    animation: slide-down-fade 0.2s ease-out;
+  }
+  
+  .animate-slide-up-fade {
+    animation: slide-up-fade 0.2s ease-out;
+  }
+  
+  .animate-slide-right-fade {
+    animation: slide-right-fade 0.2s ease-out;
+  }
+  
+  .animate-slide-left-fade {
+    animation: slide-left-fade 0.2s ease-out;
+  }
 }

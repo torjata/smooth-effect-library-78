@@ -1,74 +1,80 @@
 
-import { cn } from "@/lib/utils";
-import { useState } from "react";
-import { motion } from "framer-motion";
+import React, { useState } from 'react';
+import { cn } from '@/lib/utils';
 
 interface SwitchProps {
   checked?: boolean;
-  onCheckedChange?: (checked: boolean) => void;
+  onChange?: (checked: boolean) => void;
   disabled?: boolean;
-  label?: string;
   className?: string;
+  label?: string;
+  size?: 'sm' | 'md' | 'lg';
 }
 
 export function Switch({
-  checked = false,
-  onCheckedChange,
+  checked: controlledChecked,
+  onChange,
   disabled = false,
-  label,
   className,
+  label,
+  size = 'md'
 }: SwitchProps) {
-  const [isChecked, setIsChecked] = useState(checked);
+  const [internalChecked, setInternalChecked] = useState(false);
+  
+  const isControlled = controlledChecked !== undefined;
+  const isChecked = isControlled ? controlledChecked : internalChecked;
   
   const handleToggle = () => {
     if (disabled) return;
     
-    const newValue = !isChecked;
-    setIsChecked(newValue);
-    onCheckedChange?.(newValue);
+    if (isControlled) {
+      onChange?.(!controlledChecked);
+    } else {
+      setInternalChecked(!internalChecked);
+      onChange?.(!internalChecked);
+    }
   };
   
+  const sizeClasses = {
+    sm: 'h-4 w-7',
+    md: 'h-5 w-10',
+    lg: 'h-6 w-12'
+  };
+  
+  const thumbSizeClasses = {
+    sm: 'h-3 w-3',
+    md: 'h-4 w-4',
+    lg: 'h-5 w-5'
+  };
+  
+  const thumbOffsetClasses = {
+    sm: isChecked ? 'translate-x-3' : 'translate-x-0.5',
+    md: isChecked ? 'translate-x-5' : 'translate-x-0.5',
+    lg: isChecked ? 'translate-x-6' : 'translate-x-0.5'
+  };
+
   return (
-    <div className="flex items-center">
-      <button
-        type="button"
-        role="switch"
-        aria-checked={isChecked}
-        disabled={disabled}
+    <label className={cn("inline-flex items-center cursor-pointer", disabled && "opacity-50 cursor-not-allowed", className)}>
+      {label && <span className="mr-3 text-sm font-medium">{label}</span>}
+      <div
         onClick={handleToggle}
         className={cn(
-          "group relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-          isChecked 
-            ? "bg-gradient-to-r from-primary to-primary/80" 
-            : "bg-gradient-to-r from-muted to-muted/80",
-          disabled && "cursor-not-allowed opacity-50",
-          className
+          'relative inline-flex items-center rounded-full transition-colors ease-in-out duration-200',
+          sizeClasses[size],
+          isChecked ? 'bg-primary' : 'bg-muted',
+          !disabled && 'cursor-pointer',
+          !disabled && !isChecked && 'hover:bg-muted/70',
+          !disabled && isChecked && 'hover:bg-primary/90'
         )}
       >
-        <motion.span
-          layout
+        <span
           className={cn(
-            "pointer-events-none block h-5 w-5 rounded-full bg-background transition-all duration-200 shadow-sm",
-            disabled ? "opacity-50" : ""
+            'absolute inline-block transform rounded-full bg-white shadow-lg ring-0 transition-transform duration-200 ease-in-out',
+            thumbSizeClasses[size],
+            thumbOffsetClasses[size]
           )}
-          initial={false}
-          animate={{ 
-            x: isChecked ? "calc(100% - 5px)" : "1px"
-          }}
-          transition={{ type: "spring", stiffness: 500, damping: 30 }}
         />
-      </button>
-      {label && (
-        <label
-          className={cn(
-            "ml-2 text-sm font-medium leading-none cursor-pointer",
-            disabled && "cursor-not-allowed opacity-70"
-          )}
-          onClick={!disabled ? handleToggle : undefined}
-        >
-          {label}
-        </label>
-      )}
-    </div>
+      </div>
+    </label>
   );
 }

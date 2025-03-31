@@ -2,8 +2,9 @@
 import { DocsLayout } from "@/components/docs/DocsLayout";
 import { ComponentExample } from "@/components/docs/ComponentExample";
 import { ComponentCode } from "@/components/docs/ComponentExample";
-import { Skeleton, AvatarSkeleton, TextSkeleton, CardSkeleton } from "@/components/ui-custom/Skeleton";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui-custom/Card";
+import { Skeleton } from "@/components/ui-custom/Skeleton";
+import { Card, CardContent } from "@/components/ui-custom/Card";
+import { Avatar } from "@/components/ui-custom/Avatar";
 
 export default function SkeletonDoc() {
   return (
@@ -12,155 +13,109 @@ export default function SkeletonDoc() {
         <div>
           <h1 className="text-3xl font-bold">Skeleton</h1>
           <p className="text-muted-foreground mt-2">
-            Placeholder loading state for UI elements while content is loading.
+            Loading placeholders that animate to indicate content is loading.
           </p>
         </div>
 
         <ComponentExample title="Basic Skeleton">
-          <div className="space-y-4 w-64">
+          <div className="flex flex-col gap-4 w-full max-w-xs">
             <Skeleton className="h-4 w-full" />
-            <Skeleton className="h-4 w-3/4" />
-            <Skeleton className="h-4 w-1/2" />
+            <Skeleton className="h-4 w-[80%]" />
+            <Skeleton className="h-4 w-[60%]" />
           </div>
           <ComponentCode>
 {`<Skeleton className="h-4 w-full" />
-<Skeleton className="h-4 w-3/4" />
-<Skeleton className="h-4 w-1/2" />`}
+<Skeleton className="h-4 w-[80%]" />
+<Skeleton className="h-4 w-[60%]" />`}
           </ComponentCode>
         </ComponentExample>
 
-        <ComponentExample title="Skeleton Variants">
-          <div className="flex flex-col md:flex-row gap-8">
-            <div className="space-y-4">
-              <AvatarSkeleton />
-              <TextSkeleton />
-              <TextSkeleton className="w-3/4" />
-            </div>
-            
-            <CardSkeleton className="w-64" />
-          </div>
-          <ComponentCode>
-{`// Avatar skeleton
-<AvatarSkeleton />
-
-// Text skeletons
-<TextSkeleton />
-<TextSkeleton className="w-3/4" />
-
-// Card skeleton
-<CardSkeleton className="w-64" />`}
-          </ComponentCode>
-        </ComponentExample>
-
-        <ComponentExample title="Without Shimmer Effect">
-          <div className="space-y-4 w-64">
-            <Skeleton className="h-4 w-full" shimmer={false} />
-            <Skeleton className="h-4 w-3/4" shimmer={false} />
-            <Skeleton className="h-4 w-1/2" shimmer={false} />
-          </div>
-          <ComponentCode>
-{`<Skeleton className="h-4 w-full" shimmer={false} />
-<Skeleton className="h-4 w-3/4" shimmer={false} />
-<Skeleton className="h-4 w-1/2" shimmer={false} />`}
-          </ComponentCode>
-        </ComponentExample>
-
-        <ComponentExample title="Loading Card Example">
-          <div className="w-full max-w-md">
+        <ComponentExample title="Card Skeleton">
+          <div className="w-full max-w-sm">
             <Card>
-              <CardHeader>
-                <Skeleton className="h-6 w-1/2" />
-                <Skeleton className="h-4 w-3/4 mt-2" />
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <Skeleton className="h-4 w-full" />
-                <Skeleton className="h-4 w-full" />
-                <Skeleton className="h-4 w-2/3" />
+              <CardContent className="p-4">
+                <div className="flex items-center space-x-4">
+                  <Skeleton className="h-12 w-12 rounded-full" />
+                  <div className="space-y-2">
+                    <Skeleton className="h-4 w-[250px]" />
+                    <Skeleton className="h-4 w-[200px]" />
+                  </div>
+                </div>
+                <div className="space-y-2 mt-4">
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-[80%]" />
+                </div>
               </CardContent>
-              <CardFooter>
-                <Skeleton className="h-10 w-1/3" />
-              </CardFooter>
             </Card>
           </div>
           <ComponentCode>
 {`<Card>
-  <CardHeader>
-    <Skeleton className="h-6 w-1/2" />
-    <Skeleton className="h-4 w-3/4 mt-2" />
-  </CardHeader>
-  <CardContent className="space-y-4">
-    <Skeleton className="h-4 w-full" />
-    <Skeleton className="h-4 w-full" />
-    <Skeleton className="h-4 w-2/3" />
+  <CardContent className="p-4">
+    <div className="flex items-center space-x-4">
+      <Skeleton className="h-12 w-12 rounded-full" />
+      <div className="space-y-2">
+        <Skeleton className="h-4 w-[250px]" />
+        <Skeleton className="h-4 w-[200px]" />
+      </div>
+    </div>
+    <div className="space-y-2 mt-4">
+      <Skeleton className="h-4 w-full" />
+      <Skeleton className="h-4 w-full" />
+      <Skeleton className="h-4 w-[80%]" />
+    </div>
   </CardContent>
-  <CardFooter>
-    <Skeleton className="h-10 w-1/3" />
-  </CardFooter>
 </Card>`}
+          </ComponentCode>
+        </ComponentExample>
+
+        <ComponentExample title="Profile Skeleton">
+          <div className="flex items-center space-x-4">
+            <Skeleton className="h-12 w-12 rounded-full" />
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-[250px]" />
+              <Skeleton className="h-4 w-[200px]" />
+            </div>
+          </div>
+          <ComponentCode>
+{`<div className="flex items-center space-x-4">
+  <Skeleton className="h-12 w-12 rounded-full" />
+  <div className="space-y-2">
+    <Skeleton className="h-4 w-[250px]" />
+    <Skeleton className="h-4 w-[200px]" />
+  </div>
+</div>`}
           </ComponentCode>
         </ComponentExample>
 
         <div className="mt-10 space-y-4">
           <h2 className="text-2xl font-bold">API Reference</h2>
           
-          <div className="space-y-4">
-            <h3 className="text-xl font-semibold">Basic Skeleton Props</h3>
-            <div className="overflow-x-auto">
-              <table className="w-full border-collapse">
-                <thead>
-                  <tr className="border-b">
-                    <th className="py-3 px-4 text-left">Prop</th>
-                    <th className="py-3 px-4 text-left">Type</th>
-                    <th className="py-3 px-4 text-left">Default</th>
-                    <th className="py-3 px-4 text-left">Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr className="border-b">
-                    <td className="py-3 px-4 align-top font-mono text-sm">className</td>
-                    <td className="py-3 px-4 align-top font-mono text-sm">string</td>
-                    <td className="py-3 px-4 align-top font-mono text-sm">-</td>
-                    <td className="py-3 px-4 align-top text-sm">Additional CSS classes</td>
-                  </tr>
-                  <tr>
-                    <td className="py-3 px-4 align-top font-mono text-sm">shimmer</td>
-                    <td className="py-3 px-4 align-top font-mono text-sm">boolean</td>
-                    <td className="py-3 px-4 align-top font-mono text-sm">true</td>
-                    <td className="py-3 px-4 align-top text-sm">Whether to show the shimmer animation effect</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            
-            <h3 className="text-xl font-semibold mt-6">Helper Components</h3>
-            <div className="overflow-x-auto">
-              <table className="w-full border-collapse">
-                <thead>
-                  <tr className="border-b">
-                    <th className="py-3 px-4 text-left">Component</th>
-                    <th className="py-3 px-4 text-left">Props</th>
-                    <th className="py-3 px-4 text-left">Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr className="border-b">
-                    <td className="py-3 px-4 align-top font-mono text-sm">AvatarSkeleton</td>
-                    <td className="py-3 px-4 align-top font-mono text-sm">className, size, shimmer</td>
-                    <td className="py-3 px-4 align-top text-sm">Circular skeleton for avatars</td>
-                  </tr>
-                  <tr className="border-b">
-                    <td className="py-3 px-4 align-top font-mono text-sm">TextSkeleton</td>
-                    <td className="py-3 px-4 align-top font-mono text-sm">className, lines, shimmer</td>
-                    <td className="py-3 px-4 align-top text-sm">Skeleton for text content</td>
-                  </tr>
-                  <tr>
-                    <td className="py-3 px-4 align-top font-mono text-sm">CardSkeleton</td>
-                    <td className="py-3 px-4 align-top font-mono text-sm">className, shimmer</td>
-                    <td className="py-3 px-4 align-top text-sm">Complete card skeleton with multiple elements</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse">
+              <thead>
+                <tr className="border-b">
+                  <th className="py-3 px-4 text-left">Prop</th>
+                  <th className="py-3 px-4 text-left">Type</th>
+                  <th className="py-3 px-4 text-left">Default</th>
+                  <th className="py-3 px-4 text-left">Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="border-b">
+                  <td className="py-3 px-4 align-top font-mono text-sm">className</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">string</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">-</td>
+                  <td className="py-3 px-4 align-top text-sm">Additional CSS classes</td>
+                </tr>
+                <tr>
+                  <td className="py-3 px-4 align-top font-mono text-sm">...props</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">HTMLAttributes</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">-</td>
+                  <td className="py-3 px-4 align-top text-sm">Any additional HTML attributes</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

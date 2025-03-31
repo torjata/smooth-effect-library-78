@@ -1,229 +1,108 @@
 
-import React, { useEffect, useRef, useState } from "react";
-import { cn } from "@/lib/utils";
-import { AnimatePresence, motion } from "framer-motion";
-import { createPortal } from "react-dom";
+import React, { useState, useRef, useEffect } from 'react';
+import { cn } from '@/lib/utils';
 
 interface TooltipProps {
   content: React.ReactNode;
-  children: React.ReactElement;
-  side?: "top" | "right" | "bottom" | "left";
-  sideOffset?: number;
-  align?: "start" | "center" | "end";
+  children: React.ReactNode;
+  position?: 'top' | 'right' | 'bottom' | 'left';
   className?: string;
-  delayDuration?: number;
+  delay?: number;
 }
 
 export function Tooltip({
   content,
   children,
-  side = "top",
-  sideOffset = 4,
-  align = "center",
+  position = 'top',
   className,
-  delayDuration = 300,
+  delay = 300,
 }: TooltipProps) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const timeoutRef = useRef<number | null>(null);
-  const childRef = useRef<HTMLElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const [coords, setCoords] = useState({ x: 0, y: 0 });
+  const childRef = useRef<HTMLDivElement>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
-  const [isMounted, setIsMounted] = useState(false);
-  
+
+  const showTooltip = () => {
+    setIsVisible(true);
+  };
+
+  const hideTooltip = () => {
+    setIsVisible(false);
+  };
+
   useEffect(() => {
-    setIsMounted(true);
-    return () => {
-      setIsMounted(false);
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
+    if (isVisible && childRef.current && tooltipRef.current) {
+      const childRect = childRef.current.getBoundingClientRect();
+      const tooltipRect = tooltipRef.current.getBoundingClientRect();
+      
+      let x = 0;
+      let y = 0;
+      
+      switch (position) {
+        case 'top':
+          x = childRect.left + (childRect.width / 2) - (tooltipRect.width / 2);
+          y = childRect.top - tooltipRect.height - 8;
+          break;
+        case 'right':
+          x = childRect.right + 8;
+          y = childRect.top + (childRect.height / 2) - (tooltipRect.height / 2);
+          break;
+        case 'bottom':
+          x = childRect.left + (childRect.width / 2) - (tooltipRect.width / 2);
+          y = childRect.bottom + 8;
+          break;
+        case 'left':
+          x = childRect.left - tooltipRect.width - 8;
+          y = childRect.top + (childRect.height / 2) - (tooltipRect.height / 2);
+          break;
       }
-    };
-  }, []);
-  
-  const calculatePosition = () => {
-    if (!childRef.current || !isMounted) return;
-    
-    const rect = childRef.current.getBoundingClientRect();
-    const tooltipWidth = tooltipRef.current?.offsetWidth || 0;
-    const tooltipHeight = tooltipRef.current?.offsetHeight || 0;
-    
-    let x = 0;
-    let y = 0;
-    
-    switch (side) {
-      case "top":
-        x = rect.left + rect.width / 2;
-        y = rect.top - sideOffset;
-        break;
-      case "bottom":
-        x = rect.left + rect.width / 2;
-        y = rect.bottom + sideOffset;
-        break;
-      case "left":
-        x = rect.left - sideOffset;
-        y = rect.top + rect.height / 2;
-        break;
-      case "right":
-        x = rect.right + sideOffset;
-        y = rect.top + rect.height / 2;
-        break;
+      
+      // Adjust for window boundaries
+      x = Math.max(8, Math.min(x, window.innerWidth - tooltipRect.width - 8));
+      y = Math.max(8, Math.min(y, window.innerHeight - tooltipRect.height - 8));
+      
+      setCoords({ x, y });
     }
-    
-    // Adjust alignment
-    if (align === "start") {
-      if (side === "top" || side === "bottom") {
-        x = rect.left;
-      } else if (side === "left" || side === "right") {
-        y = rect.top;
-      }
-    } else if (align === "end") {
-      if (side === "top" || side === "bottom") {
-        x = rect.right;
-      } else if (side === "left" || side === "right") {
-        y = rect.bottom;
-      }
-    }
-    
-    setPosition({ x, y });
+  }, [isVisible, position]);
+
+  // Apply positioning
+  const tooltipStyle = {
+    left: `${coords.x}px`,
+    top: `${coords.y}px`,
   };
   
-  const handleMouseEnter = () => {
-    if (!isMounted) return;
-    calculatePosition();
-    timeoutRef.current = window.setTimeout(() => {
-      setIsOpen(true);
-    }, delayDuration);
+  // Direction classes
+  const directionClasses = {
+    top: 'animate-slide-down-fade',
+    right: 'animate-slide-left-fade',
+    bottom: 'animate-slide-up-fade',
+    left: 'animate-slide-right-fade',
   };
-  
-  const handleMouseLeave = () => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-      timeoutRef.current = null;
-    }
-    setIsOpen(false);
-  };
-  
-  const triggerChild = React.cloneElement(children, {
-    ref: childRef,
-    onMouseEnter: (e: any) => {
-      handleMouseEnter();
-      children.props.onMouseEnter?.(e);
-    },
-    onMouseLeave: (e: any) => {
-      handleMouseLeave();
-      children.props.onMouseLeave?.(e);
-    },
-    onFocus: (e: any) => {
-      handleMouseEnter();
-      children.props.onFocus?.(e);
-    },
-    onBlur: (e: any) => {
-      handleMouseLeave();
-      children.props.onBlur?.(e);
-    },
-  });
-  
-  const getPositionStyles = () => {
-    const styles: React.CSSProperties = {
-      position: 'fixed',
-      zIndex: 9999,
-    };
-    
-    switch (side) {
-      case 'top':
-        styles.left = position.x;
-        styles.bottom = window.innerHeight - position.y;
-        styles.transform = 'translateX(-50%)';
-        break;
-      case 'bottom':
-        styles.left = position.x;
-        styles.top = position.y;
-        styles.transform = 'translateX(-50%)';
-        break;
-      case 'left':
-        styles.right = window.innerWidth - position.x;
-        styles.top = position.y;
-        styles.transform = 'translateY(-50%)';
-        break;
-      case 'right':
-        styles.left = position.x;
-        styles.top = position.y;
-        styles.transform = 'translateY(-50%)';
-        break;
-    }
-    
-    // Adjust alignment
-    if (align === "start") {
-      if (side === 'top' || side === 'bottom') {
-        styles.transform = '';
-      } else if (side === 'left' || side === 'right') {
-        styles.transform = '';
-      }
-    } else if (align === "end") {
-      if (side === 'top' || side === 'bottom') {
-        styles.transform = 'translateX(-100%)';
-      } else if (side === 'left' || side === 'right') {
-        styles.transform = 'translateY(-100%)';
-      }
-    }
-    
-    return styles;
-  };
-  
-  const getAnimation = () => {
-    switch (side) {
-      case 'top':
-        return {
-          initial: { opacity: 0, y: 5 },
-          animate: { opacity: 1, y: 0 },
-          exit: { opacity: 0, y: 5 },
-        };
-      case 'bottom':
-        return {
-          initial: { opacity: 0, y: -5 },
-          animate: { opacity: 1, y: 0 },
-          exit: { opacity: 0, y: -5 },
-        };
-      case 'left':
-        return {
-          initial: { opacity: 0, x: 5 },
-          animate: { opacity: 1, x: 0 },
-          exit: { opacity: 0, x: 5 },
-        };
-      case 'right':
-        return {
-          initial: { opacity: 0, x: -5 },
-          animate: { opacity: 1, x: 0 },
-          exit: { opacity: 0, x: -5 },
-        };
-    }
-  };
-  
-  if (!isMounted) {
-    return triggerChild;
-  }
-  
+
   return (
     <>
-      {triggerChild}
-      {isMounted && isOpen && createPortal(
-        <AnimatePresence>
-          {isOpen && (
-            <motion.div
-              ref={tooltipRef}
-              className={cn(
-                "z-50 max-w-xs overflow-hidden rounded-md px-3 py-1.5 text-xs text-foreground shadow-md bg-popover border border-border/20",
-                className
-              )}
-              style={getPositionStyles()}
-              {...getAnimation()}
-              transition={{ duration: 0.15 }}
-            >
-              {content}
-            </motion.div>
+      <div 
+        ref={childRef} 
+        onMouseEnter={showTooltip} 
+        onMouseLeave={hideTooltip}
+        className="inline-flex"
+      >
+        {children}
+      </div>
+      
+      {isVisible && (
+        <div
+          ref={tooltipRef}
+          className={cn(
+            'fixed z-50 px-2.5 py-1.5 text-xs font-medium',
+            'bg-popover text-popover-foreground shadow-md rounded-md border',
+            directionClasses[position],
+            className
           )}
-        </AnimatePresence>,
-        document.body
+          style={tooltipStyle}
+        >
+          {content}
+        </div>
       )}
     </>
   );

@@ -1,134 +1,141 @@
 
-import { cn } from "@/lib/utils";
-import { Check } from "lucide-react";
-import { motion } from "framer-motion";
+import React, { createContext, useContext } from 'react';
+import { cn } from '@/lib/utils';
+import { Check } from 'lucide-react';
 
-interface StepProps {
-  title: string;
-  description?: string;
-  icon?: React.ReactNode;
+interface StepperContextValue {
+  activeStep: number;
+  orientation: 'horizontal' | 'vertical';
 }
 
+const StepperContext = createContext<StepperContextValue>({
+  activeStep: 0,
+  orientation: 'horizontal',
+});
+
 interface StepperProps {
-  steps: StepProps[];
   activeStep: number;
-  orientation?: "horizontal" | "vertical";
+  orientation?: 'horizontal' | 'vertical';
   className?: string;
+  children: React.ReactNode;
 }
 
 export function Stepper({
-  steps,
-  activeStep,
-  orientation = "horizontal",
+  activeStep = 0,
+  orientation = 'horizontal',
   className,
+  children,
 }: StepperProps) {
-  const isVertical = orientation === "vertical";
+  return (
+    <StepperContext.Provider value={{ activeStep, orientation }}>
+      <div
+        className={cn(
+          'flex',
+          orientation === 'vertical' ? 'flex-col' : 'flex-row items-center',
+          className
+        )}
+      >
+        {children}
+      </div>
+    </StepperContext.Provider>
+  );
+}
+
+interface StepperStepProps {
+  step: number;
+  label?: string;
+  description?: string;
+  icon?: React.ReactNode;
+  className?: string;
+}
+
+export function StepperStep({
+  step,
+  label,
+  description,
+  icon,
+  className,
+}: StepperStepProps) {
+  const { activeStep, orientation } = useContext(StepperContext);
   
+  const isActive = step === activeStep;
+  const isCompleted = step < activeStep;
+  
+  // Calculate the total number of steps based on children
+  const isLastStep = React.Children.count(
+    React.useContext(StepperContext).children
+  ) === step + 1;
+
   return (
     <div
       className={cn(
-        "w-full",
-        isVertical ? "flex flex-col space-y-4" : "flex",
+        'flex',
+        orientation === 'vertical' ? 'flex-row items-start' : 'flex-col items-center',
+        orientation === 'horizontal' && 'flex-1',
         className
       )}
     >
-      {steps.map((step, index) => {
-        const isActive = index === activeStep;
-        const isCompleted = index < activeStep;
-        const isLast = index === steps.length - 1;
+      <div className="flex items-center">
+        <div
+          className={cn(
+            'flex items-center justify-center rounded-full w-8 h-8 border-2 text-sm font-medium',
+            isActive && 'border-primary text-primary',
+            isCompleted && 'border-primary bg-primary text-primary-foreground',
+            !isActive && !isCompleted && 'border-muted-foreground/30 text-muted-foreground'
+          )}
+        >
+          {isCompleted ? (
+            icon || <Check className="h-4 w-4" />
+          ) : (
+            <span>{step + 1}</span>
+          )}
+        </div>
         
-        return (
+        {orientation === 'horizontal' && !isLastStep && (
           <div
-            key={index}
             className={cn(
-              "relative flex",
-              isVertical ? "flex-row" : "flex-1 flex-col items-center"
+              'w-full h-0.5 mx-4',
+              isCompleted ? 'bg-primary' : 'bg-muted-foreground/30'
             )}
-          >
-            {/* Connector Line */}
-            {!isLast && (
-              <div
-                className={cn(
-                  "absolute bg-border",
-                  isVertical
-                    ? "left-3.5 top-10 h-full w-px"
-                    : "left-0 right-0 top-3.5 h-px w-full",
-                  isVertical ? "ml-0" : "ml-[50%]"
-                )}
-              >
-                {isCompleted && (
-                  <motion.div
-                    className={cn(
-                      "absolute bg-primary",
-                      isVertical ? "h-full w-full" : "h-full w-full"
-                    )}
-                    initial={{ [isVertical ? "height" : "width"]: 0 }}
-                    animate={{ [isVertical ? "height" : "width"]: "100%" }}
-                    transition={{ duration: 0.3 }}
-                  />
-                )}
-              </div>
-            )}
-            
-            <div
+          />
+        )}
+      </div>
+      
+      {(label || description) && (
+        <div
+          className={cn(
+            'flex flex-col',
+            orientation === 'vertical' ? 'ml-4' : 'mt-2',
+            orientation === 'vertical' && !isLastStep && 'mb-8',
+            orientation === 'horizontal' && 'items-center text-center'
+          )}
+        >
+          {label && (
+            <span
               className={cn(
-                "relative flex",
-                isVertical ? "flex-row items-start" : "flex-col items-center"
+                'text-sm font-medium',
+                isActive && 'text-primary',
+                isCompleted && 'text-foreground',
+                !isActive && !isCompleted && 'text-muted-foreground'
               )}
             >
-              {/* Step Circle */}
-              <motion.div
-                className={cn(
-                  "glassmorphism z-10 flex h-7 w-7 items-center justify-center rounded-full border transition-colors duration-200",
-                  {
-                    "border-primary bg-primary text-primary-foreground": isActive || isCompleted,
-                    "border-muted bg-background": !isActive && !isCompleted,
-                  }
-                )}
-                animate={{
-                  scale: isActive ? [1, 1.1, 1] : 1,
-                  transition: { duration: 0.5 }
-                }}
-              >
-                {isCompleted ? (
-                  <Check className="h-3.5 w-3.5 text-background dark:text-foreground" />
-                ) : (
-                  <span className="text-xs font-medium">{index + 1}</span>
-                )}
-              </motion.div>
-              
-              {/* Step Content */}
-              <div
-                className={cn(
-                  "mt-2 text-center",
-                  isVertical ? "ml-3 mt-0 text-left" : ""
-                )}
-              >
-                <div className={cn(
-                  "text-sm font-medium transition-colors duration-200",
-                  isActive 
-                    ? "text-foreground" 
-                    : isCompleted 
-                      ? "text-foreground/80"
-                      : "text-muted-foreground"
-                )}>
-                  {step.title}
-                </div>
-                {step.description && (
-                  <div className={cn(
-                    "mt-0.5 text-xs transition-colors duration-200",
-                    isActive || isCompleted 
-                      ? "text-muted-foreground" 
-                      : "text-muted-foreground/70"
-                  )}>
-                    {step.description}
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        );
-      })}
+              {label}
+            </span>
+          )}
+          {description && (
+            <span className="text-xs text-muted-foreground mt-1">{description}</span>
+          )}
+        </div>
+      )}
+      
+      {orientation === 'vertical' && !isLastStep && (
+        <div
+          className={cn(
+            'ml-4 w-0.5 h-8',
+            isCompleted ? 'bg-primary' : 'bg-border'
+          )}
+        />
+      )}
     </div>
   );
 }
