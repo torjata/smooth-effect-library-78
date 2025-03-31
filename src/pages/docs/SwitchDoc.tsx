@@ -80,7 +80,7 @@ const [checked, setChecked] = useState(false);
                 </tr>
                 <tr className="border-b">
                   <td className="py-3 px-4 align-top font-mono text-sm">onChange</td>
-                  <td className="py-3 px-4 align-top font-mono text-sm">(checked: boolean) => void</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">(checked: boolean) {'->'} void</td>
                   <td className="py-3 px-4 align-top font-mono text-sm">-</td>
                   <td className="py-3 px-4 align-top text-sm">Callback when state changes</td>
                 </tr>
