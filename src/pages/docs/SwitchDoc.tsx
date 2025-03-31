@@ -88,7 +88,7 @@ export default function SwitchDoc() {
                 </tr>
                 <tr className="border-b">
                   <td className="py-3 px-4 align-top font-mono text-sm">onCheckedChange</td>
-                  <td className="py-3 px-4 align-top font-mono text-sm">(checked: boolean) => void</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">(checked: boolean) =&gt; void</td>
                   <td className="py-3 px-4 align-top font-mono text-sm">-</td>
                   <td className="py-3 px-4 align-top text-sm">Function called when the switch state changes</td>
                 </tr>
