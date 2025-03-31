@@ -9,12 +9,14 @@ import type {
 const TOAST_LIMIT = 1
 const TOAST_REMOVE_DELAY = 1000000
 
+type ToastType = 'default' | 'success' | 'error' | 'warning' | 'info'
+
 type ToasterToast = ToastProps & {
   id: string
   title?: React.ReactNode
   description?: React.ReactNode
   action?: ToastActionElement
-  type?: 'default' | 'success' | 'error' | 'warning' | 'info'
+  type?: ToastType
 }
 
 const actionTypes = {
@@ -139,7 +141,7 @@ function dispatch(action: Action) {
   })
 }
 
-type Toast = Omit<ToasterToast, "id">
+export type Toast = Omit<ToasterToast, "id">
 
 function toast({ ...props }: Toast) {
   const id = genId()
