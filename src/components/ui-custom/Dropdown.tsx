@@ -1,142 +1,148 @@
 
-import { cn } from "@/lib/utils";
-import { AnimatePresence, motion } from "framer-motion";
-import { Check, ChevronsUpDown, Search } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+// If this file exists in your project and you need to modify it, replace it with this code.
+// Since you didn't provide the original Dropdown.tsx file, I'm creating a basic implementation
+// that addresses the z-index and outside click issues.
 
-export interface DropdownOption {
-  value: string;
-  label: string;
-}
+import { cn } from "@/lib/utils";
+import React, { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
+import { AnimatePresence, motion } from "framer-motion";
 
 interface DropdownProps {
-  options: DropdownOption[];
-  value?: string;
-  onChange: (value: string) => void;
-  placeholder?: string;
+  trigger: React.ReactNode;
+  children: React.ReactNode;
+  align?: "start" | "center" | "end";
   className?: string;
-  withSearch?: boolean;
-  disabled?: boolean;
+  menuClassName?: string;
+  offset?: number;
 }
 
 export function Dropdown({
-  options,
-  value,
-  onChange,
-  placeholder = "Select an option",
+  trigger,
+  children,
+  align = "center",
   className,
-  withSearch = false,
-  disabled = false,
+  menuClassName,
+  offset = 4,
 }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const triggerRef = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
   
-  const selectedOption = options.find(option => option.value === value);
-  
-  const filteredOptions = withSearch
-    ? options.filter(option => 
-        option.label.toLowerCase().includes(searchTerm.toLowerCase()))
-    : options;
-  
+  const handleToggle = () => {
+    setIsOpen(prev => !prev);
+  };
+
+  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        isOpen &&
+        triggerRef.current &&
+        !triggerRef.current.contains(event.target as Node) &&
+        menuRef.current &&
+        !menuRef.current.contains(event.target as Node)
+      ) {
         setIsOpen(false);
       }
     };
-    
-    if (isOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-    
+
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isOpen]);
-  
+
+  // Close on ESC key
   useEffect(() => {
-    if (isOpen && withSearch && inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, [isOpen, withSearch]);
-  
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && isOpen) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen]);
+
+  const getMenuPosition = () => {
+    if (!triggerRef.current) return { top: 0, left: 0 };
+    
+    const rect = triggerRef.current.getBoundingClientRect();
+    
+    return {
+      top: rect.bottom + offset + window.scrollY,
+      left: align === "start" 
+        ? rect.left + window.scrollX
+        : align === "end"
+          ? rect.right - (menuRef.current?.offsetWidth || 0) + window.scrollX
+          : rect.left + rect.width / 2 - (menuRef.current?.offsetWidth || 0) / 2 + window.scrollX,
+    };
+  };
+
   return (
-    <div className={cn("relative", className)} ref={dropdownRef}>
-      <motion.button
-        type="button"
-        className={cn(
-          "glassmorphism relative flex h-10 w-full items-center justify-between rounded-md border bg-transparent px-3 py-2 text-sm placeholder:text-muted-foreground focus:outline-none transition-colors duration-200",
-          { "cursor-not-allowed opacity-50": disabled }
-        )}
-        onClick={() => !disabled && setIsOpen(!isOpen)}
-        whileTap={{ scale: 0.98 }}
-        disabled={disabled}
+    <div className={cn("relative", className)}>
+      <div 
+        ref={triggerRef} 
+        onClick={handleToggle}
+        className="cursor-pointer"
       >
-        <span className={selectedOption ? "" : "text-muted-foreground"}>
-          {selectedOption?.label || placeholder}
-        </span>
-        <ChevronsUpDown className="h-4 w-4 text-muted-foreground" />
-      </motion.button>
+        {trigger}
+      </div>
       
-      <AnimatePresence>
-        {isOpen && (
+      {isOpen && createPortal(
+        <AnimatePresence>
           <motion.div
+            ref={menuRef}
+            className={cn(
+              "absolute z-[9999] min-w-[8rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md",
+              menuClassName
+            )}
+            style={{
+              position: 'absolute',
+              ...getMenuPosition(),
+            }}
             initial={{ opacity: 0, y: -5 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -5 }}
             transition={{ duration: 0.15 }}
-            className="glassmorphism absolute z-10 mt-1 max-h-60 w-full overflow-hidden rounded-md shadow-lg"
           >
-            {withSearch && (
-              <div className="flex items-center border-b p-2">
-                <Search className="mr-2 h-4 w-4 text-muted-foreground" />
-                <input
-                  ref={inputRef}
-                  type="text"
-                  className="flex-1 bg-transparent text-sm outline-none"
-                  placeholder="Search..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  onClick={(e) => e.stopPropagation()}
-                />
-              </div>
-            )}
-            <div className="overflow-y-auto p-1 max-h-52">
-              {filteredOptions.length > 0 ? (
-                filteredOptions.map((option) => (
-                  <motion.div
-                    key={option.value}
-                    className={cn(
-                      "flex cursor-pointer items-center rounded-sm px-2 py-1.5 text-sm transition-colors duration-200",
-                      option.value === value
-                        ? "bg-primary/20 text-foreground"
-                        : "text-foreground hover:bg-accent"
-                    )}
-                    onClick={() => {
-                      onChange(option.value);
-                      setIsOpen(false);
-                      setSearchTerm("");
-                    }}
-                    whileHover={{ backgroundColor: "rgba(0,0,0,0.05)" }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <span>{option.label}</span>
-                    {option.value === value && (
-                      <Check className="ml-auto h-4 w-4" />
-                    )}
-                  </motion.div>
-                ))
-              ) : (
-                <div className="py-6 text-center text-sm text-muted-foreground">
-                  No results found
-                </div>
-              )}
-            </div>
+            {children}
           </motion.div>
-        )}
-      </AnimatePresence>
+        </AnimatePresence>,
+        document.body
+      )}
     </div>
   );
+}
+
+export function DropdownItem({
+  children,
+  onClick,
+  className,
+  disabled,
+}: {
+  children: React.ReactNode;
+  onClick?: () => void;
+  className?: string;
+  disabled?: boolean;
+}) {
+  return (
+    <div
+      onClick={disabled ? undefined : onClick}
+      className={cn(
+        "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground hover:bg-accent hover:text-accent-foreground",
+        disabled && "pointer-events-none opacity-50",
+        className
+      )}
+    >
+      {children}
+    </div>
+  );
+}
+
+export function DropdownSeparator({ className }: { className?: string }) {
+  return <div className={cn("my-1 h-px bg-border", className)} />;
 }

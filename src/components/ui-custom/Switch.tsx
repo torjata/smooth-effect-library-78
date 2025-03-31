@@ -39,8 +39,8 @@ export function Switch({
         className={cn(
           "group relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
           isChecked 
-            ? "bg-gradient-to-r from-primary to-primary/80" 
-            : "bg-gradient-to-r from-muted to-muted/80",
+            ? "bg-gradient-to-r from-primary to-primary/80 dark:from-primary dark:to-primary/80" 
+            : "bg-gradient-to-r from-muted to-muted/80 dark:from-muted dark:to-muted/80",
           disabled && "cursor-not-allowed opacity-50",
           className
         )}
@@ -48,12 +48,12 @@ export function Switch({
         <motion.span
           layout
           className={cn(
-            "pointer-events-none block h-5 w-5 rounded-full bg-background transition-all duration-200 shadow-sm",
+            "pointer-events-none block h-5 w-5 rounded-full bg-background shadow-sm",
             disabled ? "opacity-50" : ""
           )}
           initial={false}
           animate={{ 
-            x: isChecked ? "calc(100% - 5px)" : "1px"
+            x: isChecked ? "calc(100% - 2.5px - 2.5px)" : "2.5px"
           }}
           transition={{ type: "spring", stiffness: 500, damping: 30 }}
         />
