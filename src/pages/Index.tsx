@@ -162,8 +162,7 @@ const ComponentShowcase = () => {
     const toastConfig = {
       title: `${type.charAt(0).toUpperCase() + type.slice(1)} Toast`,
       description: `This is a ${type} toast notification example.`,
-      variant: "default",
-      type: type as any,
+      type: type,
       duration: 5000,
     };
     
