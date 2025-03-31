@@ -14,12 +14,35 @@ import {
   PlusCircle,
   Trash
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function DropdownDoc() {
   const [isOpen1, setIsOpen1] = useState(false);
   const [isOpen2, setIsOpen2] = useState(false);
   const [isOpen3, setIsOpen3] = useState(false);
+  
+  const dropdownRef1 = useRef<HTMLDivElement>(null);
+  const dropdownRef2 = useRef<HTMLDivElement>(null);
+  const dropdownRef3 = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef1.current && !dropdownRef1.current.contains(event.target as Node)) {
+        setIsOpen1(false);
+      }
+      if (dropdownRef2.current && !dropdownRef2.current.contains(event.target as Node)) {
+        setIsOpen2(false);
+      }
+      if (dropdownRef3.current && !dropdownRef3.current.contains(event.target as Node)) {
+        setIsOpen3(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   return (
     <DocsLayout>
@@ -33,14 +56,14 @@ export default function DropdownDoc() {
 
         <ComponentExample title="Basic Dropdown">
           <div className="flex flex-col items-center">
-            <div className="relative">
+            <div className="relative" ref={dropdownRef1}>
               <Button onClick={() => setIsOpen1(!isOpen1)}>
                 Options
                 <ChevronDown className="h-4 w-4" />
               </Button>
               
               {isOpen1 && (
-                <div className="absolute z-10 mt-2 min-w-[8rem] rounded-md border bg-popover p-1 shadow-md animate-in fade-in-80 slide-in-from-top-1">
+                <div className="absolute z-[100] mt-2 min-w-[8rem] rounded-md border bg-popover p-1 shadow-md animate-in fade-in-80 slide-in-from-top-1">
                   <div className="py-1.5 px-2 text-sm cursor-pointer hover:bg-accent hover:text-accent-foreground rounded-sm">Profile</div>
                   <div className="py-1.5 px-2 text-sm cursor-pointer hover:bg-accent hover:text-accent-foreground rounded-sm">Settings</div>
                   <div className="h-px my-1 bg-muted"></div>
@@ -69,14 +92,14 @@ export default function DropdownDoc() {
 
         <ComponentExample title="With Icons">
           <div className="flex flex-col items-center">
-            <div className="relative">
+            <div className="relative" ref={dropdownRef2}>
               <Button onClick={() => setIsOpen2(!isOpen2)}>
                 Account
                 <ChevronDown className="h-4 w-4" />
               </Button>
               
               {isOpen2 && (
-                <div className="absolute z-10 mt-2 min-w-[8rem] rounded-md border bg-popover p-1 shadow-md animate-in fade-in-80 slide-in-from-top-1">
+                <div className="absolute z-[100] mt-2 min-w-[8rem] rounded-md border bg-popover p-1 shadow-md animate-in fade-in-80 slide-in-from-top-1">
                   <div className="py-1.5 px-2 text-sm cursor-pointer hover:bg-accent hover:text-accent-foreground rounded-sm flex items-center">
                     <User className="mr-2 h-4 w-4" />
                     <span>Profile</span>
@@ -123,7 +146,7 @@ export default function DropdownDoc() {
 
         <ComponentExample title="With Sections">
           <div className="flex flex-col items-center">
-            <div className="relative">
+            <div className="relative" ref={dropdownRef3}>
               <Button variant="outline" onClick={() => setIsOpen3(!isOpen3)}>
                 <Bell className="h-4 w-4 mr-2" />
                 Notifications
@@ -131,7 +154,7 @@ export default function DropdownDoc() {
               </Button>
               
               {isOpen3 && (
-                <div className="absolute z-10 mt-2 w-56 rounded-md border bg-popover p-1 shadow-md animate-in fade-in-80 slide-in-from-top-1">
+                <div className="absolute z-[100] mt-2 w-56 rounded-md border bg-popover p-1 shadow-md animate-in fade-in-80 slide-in-from-top-1">
                   <div className="px-2 py-1.5 text-xs font-medium">Messages</div>
                   <div className="py-1.5 px-2 text-sm cursor-pointer hover:bg-accent hover:text-accent-foreground rounded-sm flex items-center">
                     <Mail className="mr-2 h-4 w-4" />

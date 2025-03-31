@@ -109,30 +109,106 @@ export default function AccordionDoc() {
           <h2 className="text-2xl font-bold">API Reference</h2>
           
           <div className="space-y-4">
-            <div>
-              <h3 className="text-xl font-semibold">Accordion Props</h3>
-              <ul className="list-disc pl-6 mt-2 space-y-2">
-                <li><code>type</code> - "single" or "multiple" (determines if one or multiple items can be open)</li>
-                <li><code>defaultValue</code> - Default open item value(s)</li>
-                <li><code>collapsible</code> - Whether all items can be closed (when type="single")</li>
-                <li><code>className</code> - Additional CSS classes</li>
-              </ul>
+            <h3 className="text-xl font-semibold">Accordion Component</h3>
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse">
+                <thead>
+                  <tr className="border-b">
+                    <th className="py-3 px-4 text-left">Prop</th>
+                    <th className="py-3 px-4 text-left">Type</th>
+                    <th className="py-3 px-4 text-left">Default</th>
+                    <th className="py-3 px-4 text-left">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-b">
+                    <td className="py-3 px-4 align-top font-mono text-sm">type</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">"single" | "multiple"</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">"single"</td>
+                    <td className="py-3 px-4 align-top text-sm">Determines if one or multiple items can be open</td>
+                  </tr>
+                  <tr className="border-b">
+                    <td className="py-3 px-4 align-top font-mono text-sm">defaultValue</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">string</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">-</td>
+                    <td className="py-3 px-4 align-top text-sm">Default open item value(s)</td>
+                  </tr>
+                  <tr className="border-b">
+                    <td className="py-3 px-4 align-top font-mono text-sm">collapsible</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">boolean</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">true</td>
+                    <td className="py-3 px-4 align-top text-sm">Whether all items can be closed (when type="single")</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3 px-4 align-top font-mono text-sm">className</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">string</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">-</td>
+                    <td className="py-3 px-4 align-top text-sm">Additional CSS classes</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
             
-            <div>
-              <h3 className="text-xl font-semibold">AccordionItem Props</h3>
-              <ul className="list-disc pl-6 mt-2 space-y-2">
-                <li><code>value</code> - Unique identifier for the item</li>
-                <li><code>disabled</code> - Whether the item is disabled</li>
-                <li><code>className</code> - Additional CSS classes</li>
-              </ul>
+            <h3 className="text-xl font-semibold mt-6">AccordionItem Component</h3>
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse">
+                <thead>
+                  <tr className="border-b">
+                    <th className="py-3 px-4 text-left">Prop</th>
+                    <th className="py-3 px-4 text-left">Type</th>
+                    <th className="py-3 px-4 text-left">Default</th>
+                    <th className="py-3 px-4 text-left">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-b">
+                    <td className="py-3 px-4 align-top font-mono text-sm">value</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">string</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">-</td>
+                    <td className="py-3 px-4 align-top text-sm">Unique identifier for the item</td>
+                  </tr>
+                  <tr className="border-b">
+                    <td className="py-3 px-4 align-top font-mono text-sm">disabled</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">boolean</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">false</td>
+                    <td className="py-3 px-4 align-top text-sm">Whether the item is disabled</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3 px-4 align-top font-mono text-sm">className</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">string</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">-</td>
+                    <td className="py-3 px-4 align-top text-sm">Additional CSS classes</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
             
-            <div>
-              <h3 className="text-xl font-semibold">AccordionTrigger & AccordionContent</h3>
-              <ul className="list-disc pl-6 mt-2 space-y-2">
-                <li><code>className</code> - Additional CSS classes</li>
-              </ul>
+            <h3 className="text-xl font-semibold mt-6">AccordionTrigger & AccordionContent</h3>
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse">
+                <thead>
+                  <tr className="border-b">
+                    <th className="py-3 px-4 text-left">Prop</th>
+                    <th className="py-3 px-4 text-left">Type</th>
+                    <th className="py-3 px-4 text-left">Default</th>
+                    <th className="py-3 px-4 text-left">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-b">
+                    <td className="py-3 px-4 align-top font-mono text-sm">className</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">string</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">-</td>
+                    <td className="py-3 px-4 align-top text-sm">Additional CSS classes</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3 px-4 align-top font-mono text-sm">children</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">ReactNode</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">-</td>
+                    <td className="py-3 px-4 align-top text-sm">Content to display</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>

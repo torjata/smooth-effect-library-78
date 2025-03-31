@@ -87,17 +87,61 @@ export default function AvatarDoc() {
         <div className="mt-10 space-y-4">
           <h2 className="text-2xl font-bold">API Reference</h2>
           
-          <div>
-            <h3 className="text-xl font-semibold">Props</h3>
-            <ul className="list-disc pl-6 mt-2 space-y-2">
-              <li><code>src</code> - URL for the avatar image</li>
-              <li><code>alt</code> - Alt text for the image</li>
-              <li><code>fallback</code> - Text to display when no image is available</li>
-              <li><code>size</code> - Avatar size: "sm", "md", "lg", "xl"</li>
-              <li><code>status</code> - Status indicator: "online", "offline", "away", "busy"</li>
-              <li><code>badge</code> - Optional badge component to display on the avatar</li>
-              <li><code>className</code> - Additional CSS classes</li>
-            </ul>
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse">
+              <thead>
+                <tr className="border-b">
+                  <th className="py-3 px-4 text-left">Prop</th>
+                  <th className="py-3 px-4 text-left">Type</th>
+                  <th className="py-3 px-4 text-left">Default</th>
+                  <th className="py-3 px-4 text-left">Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="border-b">
+                  <td className="py-3 px-4 align-top font-mono text-sm">src</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">string</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">-</td>
+                  <td className="py-3 px-4 align-top text-sm">URL for the avatar image</td>
+                </tr>
+                <tr className="border-b">
+                  <td className="py-3 px-4 align-top font-mono text-sm">alt</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">string</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">"Avatar"</td>
+                  <td className="py-3 px-4 align-top text-sm">Alt text for the image</td>
+                </tr>
+                <tr className="border-b">
+                  <td className="py-3 px-4 align-top font-mono text-sm">fallback</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">string</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">"?"</td>
+                  <td className="py-3 px-4 align-top text-sm">Text to display when no image is available</td>
+                </tr>
+                <tr className="border-b">
+                  <td className="py-3 px-4 align-top font-mono text-sm">size</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">"sm" | "md" | "lg" | "xl"</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">"md"</td>
+                  <td className="py-3 px-4 align-top text-sm">Avatar size</td>
+                </tr>
+                <tr className="border-b">
+                  <td className="py-3 px-4 align-top font-mono text-sm">status</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">"online" | "offline" | "away" | "busy"</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">-</td>
+                  <td className="py-3 px-4 align-top text-sm">Status indicator</td>
+                </tr>
+                <tr className="border-b">
+                  <td className="py-3 px-4 align-top font-mono text-sm">badge</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">ReactNode</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">-</td>
+                  <td className="py-3 px-4 align-top text-sm">Optional badge component to display on the avatar</td>
+                </tr>
+                <tr>
+                  <td className="py-3 px-4 align-top font-mono text-sm">className</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">string</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">-</td>
+                  <td className="py-3 px-4 align-top text-sm">Additional CSS classes</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

@@ -53,7 +53,7 @@ export function Switch({
           )}
           initial={false}
           animate={{ 
-            x: isChecked ? "calc(100% - 2px)" : "2px"
+            x: isChecked ? "calc(100% - 5px)" : "1px"
           }}
           transition={{ type: "spring", stiffness: 500, damping: 30 }}
         />

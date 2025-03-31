@@ -2,6 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
+import { createPortal } from "react-dom";
 
 interface TooltipProps {
   content: React.ReactNode;
@@ -27,9 +28,12 @@ export function Tooltip({
   const timeoutRef = useRef<number | null>(null);
   const childRef = useRef<HTMLElement>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
+  const [isMounted, setIsMounted] = useState(false);
   
   useEffect(() => {
+    setIsMounted(true);
     return () => {
+      setIsMounted(false);
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
@@ -37,21 +41,22 @@ export function Tooltip({
   }, []);
   
   const calculatePosition = () => {
-    if (!childRef.current) return;
+    if (!childRef.current || !isMounted) return;
     
     const rect = childRef.current.getBoundingClientRect();
-    const childCenterX = rect.left + rect.width / 2;
-    const childCenterY = rect.top + rect.height / 2;
+    const tooltipWidth = tooltipRef.current?.offsetWidth || 0;
+    const tooltipHeight = tooltipRef.current?.offsetHeight || 0;
     
-    let x = childCenterX;
-    let y = childCenterY;
+    let x = 0;
+    let y = 0;
     
-    // Adjust position based on side
     switch (side) {
       case "top":
+        x = rect.left + rect.width / 2;
         y = rect.top - sideOffset;
         break;
       case "bottom":
+        x = rect.left + rect.width / 2;
         y = rect.bottom + sideOffset;
         break;
       case "left":
@@ -65,15 +70,16 @@ export function Tooltip({
     }
     
     // Adjust alignment
-    if (align !== "center" && tooltipRef.current) {
-      const tooltipRect = tooltipRef.current.getBoundingClientRect();
-      if ((side === "top" || side === "bottom") && align === "start") {
+    if (align === "start") {
+      if (side === "top" || side === "bottom") {
         x = rect.left;
-      } else if ((side === "top" || side === "bottom") && align === "end") {
-        x = rect.right;
-      } else if ((side === "left" || side === "right") && align === "start") {
+      } else if (side === "left" || side === "right") {
         y = rect.top;
-      } else if ((side === "left" || side === "right") && align === "end") {
+      }
+    } else if (align === "end") {
+      if (side === "top" || side === "bottom") {
+        x = rect.right;
+      } else if (side === "left" || side === "right") {
         y = rect.bottom;
       }
     }
@@ -82,6 +88,7 @@ export function Tooltip({
   };
   
   const handleMouseEnter = () => {
+    if (!isMounted) return;
     calculatePosition();
     timeoutRef.current = window.setTimeout(() => {
       setIsOpen(true);
@@ -119,42 +126,44 @@ export function Tooltip({
   const getPositionStyles = () => {
     const styles: React.CSSProperties = {
       position: 'fixed',
+      zIndex: 9999,
     };
     
     switch (side) {
       case 'top':
         styles.left = position.x;
-        styles.top = position.y;
-        styles.transform = 'translate(-50%, -100%)';
+        styles.bottom = window.innerHeight - position.y;
+        styles.transform = 'translateX(-50%)';
         break;
       case 'bottom':
         styles.left = position.x;
         styles.top = position.y;
-        styles.transform = 'translate(-50%, 0)';
+        styles.transform = 'translateX(-50%)';
         break;
       case 'left':
-        styles.left = position.x;
+        styles.right = window.innerWidth - position.x;
         styles.top = position.y;
-        styles.transform = 'translate(-100%, -50%)';
+        styles.transform = 'translateY(-50%)';
         break;
       case 'right':
         styles.left = position.x;
         styles.top = position.y;
-        styles.transform = 'translate(0, -50%)';
+        styles.transform = 'translateY(-50%)';
         break;
     }
     
+    // Adjust alignment
     if (align === "start") {
       if (side === 'top' || side === 'bottom') {
-        styles.transform = styles.transform.replace('-50%', '0');
+        styles.transform = '';
       } else if (side === 'left' || side === 'right') {
-        styles.transform = styles.transform.replace('-50%', '0');
+        styles.transform = '';
       }
     } else if (align === "end") {
       if (side === 'top' || side === 'bottom') {
-        styles.transform = styles.transform.replace('-50%', '-100%');
+        styles.transform = 'translateX(-100%)';
       } else if (side === 'left' || side === 'right') {
-        styles.transform = styles.transform.replace('-50%', '-100%');
+        styles.transform = 'translateY(-100%)';
       }
     }
     
@@ -190,25 +199,32 @@ export function Tooltip({
     }
   };
   
+  if (!isMounted) {
+    return triggerChild;
+  }
+  
   return (
     <>
       {triggerChild}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            ref={tooltipRef}
-            className={cn(
-              "z-50 max-w-xs overflow-hidden rounded-md px-3 py-1.5 text-xs text-foreground shadow-md bg-popover border border-border/20",
-              className
-            )}
-            style={getPositionStyles()}
-            {...getAnimation()}
-            transition={{ duration: 0.15 }}
-          >
-            {content}
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {isMounted && isOpen && createPortal(
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              ref={tooltipRef}
+              className={cn(
+                "z-50 max-w-xs overflow-hidden rounded-md px-3 py-1.5 text-xs text-foreground shadow-md bg-popover border border-border/20",
+                className
+              )}
+              style={getPositionStyles()}
+              {...getAnimation()}
+              transition={{ duration: 0.15 }}
+            >
+              {content}
+            </motion.div>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
     </>
   );
 }

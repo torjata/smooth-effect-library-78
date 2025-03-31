@@ -104,21 +104,62 @@ export default function SkeletonDoc() {
           <h2 className="text-2xl font-bold">API Reference</h2>
           
           <div className="space-y-4">
-            <div>
-              <h3 className="text-xl font-semibold">Basic Skeleton Props</h3>
-              <ul className="list-disc pl-6 mt-2 space-y-2">
-                <li><code>className</code> - Additional CSS classes</li>
-                <li><code>shimmer</code> - Whether to show the shimmer animation effect (default: true)</li>
-              </ul>
+            <h3 className="text-xl font-semibold">Basic Skeleton Props</h3>
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse">
+                <thead>
+                  <tr className="border-b">
+                    <th className="py-3 px-4 text-left">Prop</th>
+                    <th className="py-3 px-4 text-left">Type</th>
+                    <th className="py-3 px-4 text-left">Default</th>
+                    <th className="py-3 px-4 text-left">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-b">
+                    <td className="py-3 px-4 align-top font-mono text-sm">className</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">string</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">-</td>
+                    <td className="py-3 px-4 align-top text-sm">Additional CSS classes</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3 px-4 align-top font-mono text-sm">shimmer</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">boolean</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">true</td>
+                    <td className="py-3 px-4 align-top text-sm">Whether to show the shimmer animation effect</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
             
-            <div>
-              <h3 className="text-xl font-semibold">Helper Components</h3>
-              <ul className="list-disc pl-6 mt-2 space-y-2">
-                <li><code>AvatarSkeleton</code> - Circular skeleton for avatars</li>
-                <li><code>TextSkeleton</code> - Skeleton for text content</li>
-                <li><code>CardSkeleton</code> - Complete card skeleton with multiple elements</li>
-              </ul>
+            <h3 className="text-xl font-semibold mt-6">Helper Components</h3>
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse">
+                <thead>
+                  <tr className="border-b">
+                    <th className="py-3 px-4 text-left">Component</th>
+                    <th className="py-3 px-4 text-left">Props</th>
+                    <th className="py-3 px-4 text-left">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-b">
+                    <td className="py-3 px-4 align-top font-mono text-sm">AvatarSkeleton</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">className, size, shimmer</td>
+                    <td className="py-3 px-4 align-top text-sm">Circular skeleton for avatars</td>
+                  </tr>
+                  <tr className="border-b">
+                    <td className="py-3 px-4 align-top font-mono text-sm">TextSkeleton</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">className, lines, shimmer</td>
+                    <td className="py-3 px-4 align-top text-sm">Skeleton for text content</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3 px-4 align-top font-mono text-sm">CardSkeleton</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">className, shimmer</td>
+                    <td className="py-3 px-4 align-top text-sm">Complete card skeleton with multiple elements</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>

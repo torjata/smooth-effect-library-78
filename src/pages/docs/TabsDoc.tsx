@@ -137,39 +137,134 @@ export default function TabsDoc() {
           <h2 className="text-2xl font-bold">API Reference</h2>
           
           <div className="space-y-4">
-            <div>
-              <h3 className="text-xl font-semibold">Tabs Props</h3>
-              <ul className="list-disc pl-6 mt-2 space-y-2">
-                <li><code>defaultValue</code> - The value of the tab that should be active when initially rendered</li>
-                <li><code>value</code> - The controlled value of the currently active tab</li>
-                <li><code>onValueChange</code> - Callback fired when the active tab changes</li>
-                <li><code>className</code> - Additional CSS classes</li>
-              </ul>
+            <h3 className="text-xl font-semibold">Tabs Props</h3>
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse">
+                <thead>
+                  <tr className="border-b">
+                    <th className="py-3 px-4 text-left">Prop</th>
+                    <th className="py-3 px-4 text-left">Type</th>
+                    <th className="py-3 px-4 text-left">Default</th>
+                    <th className="py-3 px-4 text-left">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-b">
+                    <td className="py-3 px-4 align-top font-mono text-sm">defaultValue</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">string</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">-</td>
+                    <td className="py-3 px-4 align-top text-sm">The value of the tab that should be active when initially rendered</td>
+                  </tr>
+                  <tr className="border-b">
+                    <td className="py-3 px-4 align-top font-mono text-sm">value</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">string</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">-</td>
+                    <td className="py-3 px-4 align-top text-sm">The controlled value of the currently active tab</td>
+                  </tr>
+                  <tr className="border-b">
+                    <td className="py-3 px-4 align-top font-mono text-sm">onValueChange</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">(value: string) => void</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">-</td>
+                    <td className="py-3 px-4 align-top text-sm">Callback fired when the active tab changes</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3 px-4 align-top font-mono text-sm">className</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">string</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">-</td>
+                    <td className="py-3 px-4 align-top text-sm">Additional CSS classes</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
             
-            <div>
-              <h3 className="text-xl font-semibold">TabsList Props</h3>
-              <ul className="list-disc pl-6 mt-2 space-y-2">
-                <li><code>className</code> - Additional CSS classes</li>
-              </ul>
+            <h3 className="text-xl font-semibold mt-6">TabsList Props</h3>
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse">
+                <thead>
+                  <tr className="border-b">
+                    <th className="py-3 px-4 text-left">Prop</th>
+                    <th className="py-3 px-4 text-left">Type</th>
+                    <th className="py-3 px-4 text-left">Default</th>
+                    <th className="py-3 px-4 text-left">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td className="py-3 px-4 align-top font-mono text-sm">className</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">string</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">-</td>
+                    <td className="py-3 px-4 align-top text-sm">Additional CSS classes</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
             
-            <div>
-              <h3 className="text-xl font-semibold">TabsTrigger Props</h3>
-              <ul className="list-disc pl-6 mt-2 space-y-2">
-                <li><code>value</code> - Unique identifier matching its corresponding TabsContent</li>
-                <li><code>disabled</code> - Whether the tab is disabled</li>
-                <li><code>className</code> - Additional CSS classes</li>
-              </ul>
+            <h3 className="text-xl font-semibold mt-6">TabsTrigger Props</h3>
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse">
+                <thead>
+                  <tr className="border-b">
+                    <th className="py-3 px-4 text-left">Prop</th>
+                    <th className="py-3 px-4 text-left">Type</th>
+                    <th className="py-3 px-4 text-left">Default</th>
+                    <th className="py-3 px-4 text-left">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-b">
+                    <td className="py-3 px-4 align-top font-mono text-sm">value</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">string</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">-</td>
+                    <td className="py-3 px-4 align-top text-sm">Unique identifier matching its corresponding TabsContent</td>
+                  </tr>
+                  <tr className="border-b">
+                    <td className="py-3 px-4 align-top font-mono text-sm">disabled</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">boolean</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">false</td>
+                    <td className="py-3 px-4 align-top text-sm">Whether the tab is disabled</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3 px-4 align-top font-mono text-sm">className</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">string</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">-</td>
+                    <td className="py-3 px-4 align-top text-sm">Additional CSS classes</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
             
-            <div>
-              <h3 className="text-xl font-semibold">TabsContent Props</h3>
-              <ul className="list-disc pl-6 mt-2 space-y-2">
-                <li><code>value</code> - Unique identifier matching its corresponding TabsTrigger</li>
-                <li><code>forceMount</code> - Force the content to be mounted regardless of active state</li>
-                <li><code>className</code> - Additional CSS classes</li>
-              </ul>
+            <h3 className="text-xl font-semibold mt-6">TabsContent Props</h3>
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse">
+                <thead>
+                  <tr className="border-b">
+                    <th className="py-3 px-4 text-left">Prop</th>
+                    <th className="py-3 px-4 text-left">Type</th>
+                    <th className="py-3 px-4 text-left">Default</th>
+                    <th className="py-3 px-4 text-left">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-b">
+                    <td className="py-3 px-4 align-top font-mono text-sm">value</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">string</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">-</td>
+                    <td className="py-3 px-4 align-top text-sm">Unique identifier matching its corresponding TabsTrigger</td>
+                  </tr>
+                  <tr className="border-b">
+                    <td className="py-3 px-4 align-top font-mono text-sm">forceMount</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">boolean</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">false</td>
+                    <td className="py-3 px-4 align-top text-sm">Force the content to be mounted regardless of active state</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3 px-4 align-top font-mono text-sm">className</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">string</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">-</td>
+                    <td className="py-3 px-4 align-top text-sm">Additional CSS classes</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>

@@ -116,23 +116,76 @@ const steps = [
         <div className="mt-10 space-y-4">
           <h2 className="text-2xl font-bold">API Reference</h2>
           
-          <div>
-            <h3 className="text-xl font-semibold">Props</h3>
-            <ul className="list-disc pl-6 mt-2 space-y-2">
-              <li><code>steps</code> - Array of step objects with title and optional description</li>
-              <li><code>activeStep</code> - Index of the current active step</li>
-              <li><code>orientation</code> - "horizontal" or "vertical" layout (default: "horizontal")</li>
-              <li><code>className</code> - Additional CSS classes</li>
-            </ul>
-          </div>
-          
-          <div>
-            <h3 className="text-xl font-semibold">Step Object</h3>
-            <ul className="list-disc pl-6 mt-2 space-y-2">
-              <li><code>title</code> - Title text for the step</li>
-              <li><code>description</code> - Optional description text</li>
-              <li><code>icon</code> - Optional custom icon for the step</li>
-            </ul>
+          <div className="space-y-4">
+            <h3 className="text-xl font-semibold">Stepper Props</h3>
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse">
+                <thead>
+                  <tr className="border-b">
+                    <th className="py-3 px-4 text-left">Prop</th>
+                    <th className="py-3 px-4 text-left">Type</th>
+                    <th className="py-3 px-4 text-left">Default</th>
+                    <th className="py-3 px-4 text-left">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-b">
+                    <td className="py-3 px-4 align-top font-mono text-sm">steps</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">StepObject[]</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">-</td>
+                    <td className="py-3 px-4 align-top text-sm">Array of step objects with title and optional description</td>
+                  </tr>
+                  <tr className="border-b">
+                    <td className="py-3 px-4 align-top font-mono text-sm">activeStep</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">number</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">0</td>
+                    <td className="py-3 px-4 align-top text-sm">Index of the current active step</td>
+                  </tr>
+                  <tr className="border-b">
+                    <td className="py-3 px-4 align-top font-mono text-sm">orientation</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">"horizontal" | "vertical"</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">"horizontal"</td>
+                    <td className="py-3 px-4 align-top text-sm">Layout orientation of the stepper</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3 px-4 align-top font-mono text-sm">className</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">string</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">-</td>
+                    <td className="py-3 px-4 align-top text-sm">Additional CSS classes</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            
+            <h3 className="text-xl font-semibold mt-6">Step Object</h3>
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse">
+                <thead>
+                  <tr className="border-b">
+                    <th className="py-3 px-4 text-left">Property</th>
+                    <th className="py-3 px-4 text-left">Type</th>
+                    <th className="py-3 px-4 text-left">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-b">
+                    <td className="py-3 px-4 align-top font-mono text-sm">title</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">string</td>
+                    <td className="py-3 px-4 align-top text-sm">Title text for the step</td>
+                  </tr>
+                  <tr className="border-b">
+                    <td className="py-3 px-4 align-top font-mono text-sm">description</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">string</td>
+                    <td className="py-3 px-4 align-top text-sm">Optional description text</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3 px-4 align-top font-mono text-sm">icon</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">ReactNode</td>
+                    <td className="py-3 px-4 align-top text-sm">Optional custom icon for the step</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
