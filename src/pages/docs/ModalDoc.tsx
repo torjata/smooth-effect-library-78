@@ -133,7 +133,7 @@ export default function ModalDoc() {
                   </tr>
                   <tr className="border-b">
                     <td className="py-3 px-4 align-top font-mono text-sm">onClose</td>
-                    <td className="py-3 px-4 align-top font-mono text-sm">() => void</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">() =&gt; void</td>
                     <td className="py-3 px-4 align-top font-mono text-sm">-</td>
                     <td className="py-3 px-4 align-top text-sm">Function called when the modal should close</td>
                   </tr>

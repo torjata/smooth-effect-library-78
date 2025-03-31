@@ -163,7 +163,7 @@ export default function TabsDoc() {
                   </tr>
                   <tr className="border-b">
                     <td className="py-3 px-4 align-top font-mono text-sm">onValueChange</td>
-                    <td className="py-3 px-4 align-top font-mono text-sm">(value: string) => void</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">(value: string) =&gt; void</td>
                     <td className="py-3 px-4 align-top font-mono text-sm">-</td>
                     <td className="py-3 px-4 align-top text-sm">Callback fired when the active tab changes</td>
                   </tr>
