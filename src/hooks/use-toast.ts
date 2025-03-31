@@ -1,3 +1,4 @@
+
 import * as React from "react"
 
 import type {
@@ -10,6 +11,7 @@ const TOAST_REMOVE_DELAY = 1000000
 
 export type ToastType = 'default' | 'success' | 'error' | 'warning' | 'info'
 
+// Updated to ensure type compatibility with ToastProps while including our custom properties
 type ToasterToast = ToastProps & {
   id: string
   title?: React.ReactNode
@@ -138,16 +140,8 @@ function dispatch(action: Action) {
   })
 }
 
-export interface Toast {
-  id?: string
-  title?: React.ReactNode
-  description?: React.ReactNode
-  action?: ToastActionElement
-  type?: ToastType
-  duration?: number
-  onOpenChange?: (open: boolean) => void
-  open?: boolean
-}
+// Define Toast as a type that aligns with ToasterToast to ensure compatibility
+export type Toast = Omit<ToasterToast, "id">
 
 function toast({ ...props }: Toast) {
   const id = genId()
