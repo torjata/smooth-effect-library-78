@@ -11,14 +11,20 @@ const TOAST_REMOVE_DELAY = 1000000
 
 export type ToastType = 'default' | 'success' | 'error' | 'warning' | 'info'
 
+// Extract what we can from ToastProps but omit problematic fields
+type RadixToastProps = Omit<React.ComponentPropsWithoutRef<typeof import('@radix-ui/react-toast').Root>, "type">
+
 // Define ToasterToast with our custom properties
-type ToasterToast = Omit<ToastProps, "variant"> & {
+type ToasterToast = {
   id: string
   title?: React.ReactNode
   description?: React.ReactNode
   action?: ToastActionElement
   type?: ToastType
   duration?: number
+  open?: boolean
+  onOpenChange?: (open: boolean) => void
+  variant?: "default" | "destructive"
 }
 
 const actionTypes = {
@@ -151,12 +157,13 @@ export interface Toast {
   duration?: number
   onOpenChange?: (open: boolean) => void
   open?: boolean
+  variant?: "default" | "destructive"
 }
 
 function toast({ ...props }: Toast) {
   const id = genId()
 
-  const update = (props: ToasterToast) =>
+  const update = (props: Partial<ToasterToast>) =>
     dispatch({
       type: "UPDATE_TOAST",
       toast: { ...props, id },
