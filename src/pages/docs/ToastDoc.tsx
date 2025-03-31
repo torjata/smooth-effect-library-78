@@ -14,7 +14,7 @@ export default function ToastDoc() {
       title: `${type.charAt(0).toUpperCase() + type.slice(1)} Toast`,
       description: `This is a ${type} toast notification example.`,
       variant: "default", // Use the valid variant property
-      type: type, // Keep the custom type property for styling
+      type: type as any, // Cast to any to work around type issues
       duration: 5000,
     });
   };

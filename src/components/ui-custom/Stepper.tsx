@@ -6,6 +6,7 @@ import { Check } from 'lucide-react';
 interface StepperContextValue {
   activeStep: number;
   orientation: 'horizontal' | 'vertical';
+  children?: React.ReactNode; // Add children to context type
 }
 
 const StepperContext = createContext<StepperContextValue>({
@@ -27,7 +28,7 @@ export function Stepper({
   children,
 }: StepperProps) {
   return (
-    <StepperContext.Provider value={{ activeStep, orientation }}>
+    <StepperContext.Provider value={{ activeStep, orientation, children }}>
       <div
         className={cn(
           'flex',
@@ -61,10 +62,11 @@ export function StepperStep({
   const isActive = step === activeStep;
   const isCompleted = step < activeStep;
   
-  // Calculate the total number of steps based on children
-  const isLastStep = React.Children.count(
-    React.useContext(StepperContext).children
-  ) === step + 1;
+  // Calculate if this is the last step based on sibling count
+  // Since we can't use children from context directly for this logic
+  const isLastStep = step === React.Children.count(
+    React.Children.toArray(useContext(StepperContext).children)
+  ) - 1;
 
   return (
     <div

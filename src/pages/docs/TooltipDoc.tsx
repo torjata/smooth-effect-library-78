@@ -63,16 +63,16 @@ export default function TooltipDoc() {
           <div className="flex flex-wrap justify-center gap-4 py-8">
             {showTooltips ? (
               <>
-                <Tooltip content="This tooltip appears on top" side="top">
+                <Tooltip content="This tooltip appears on top" position="top">
                   <Button variant="outline">Top</Button>
                 </Tooltip>
-                <Tooltip content="This tooltip appears on the right" side="right">
+                <Tooltip content="This tooltip appears on the right" position="right">
                   <Button variant="outline">Right</Button>
                 </Tooltip>
-                <Tooltip content="This tooltip appears on the bottom" side="bottom">
+                <Tooltip content="This tooltip appears on the bottom" position="bottom">
                   <Button variant="outline">Bottom</Button>
                 </Tooltip>
-                <Tooltip content="This tooltip appears on the left" side="left">
+                <Tooltip content="This tooltip appears on the left" position="left">
                   <Button variant="outline">Left</Button>
                 </Tooltip>
               </>
@@ -86,19 +86,19 @@ export default function TooltipDoc() {
             )}
           </div>
           <ComponentCode>
-{`<Tooltip content="This tooltip appears on top" side="top">
+{`<Tooltip content="This tooltip appears on top" position="top">
   <Button variant="outline">Top</Button>
 </Tooltip>
 
-<Tooltip content="This tooltip appears on the right" side="right">
+<Tooltip content="This tooltip appears on the right" position="right">
   <Button variant="outline">Right</Button>
 </Tooltip>
 
-<Tooltip content="This tooltip appears on the bottom" side="bottom">
+<Tooltip content="This tooltip appears on the bottom" position="bottom">
   <Button variant="outline">Bottom</Button>
 </Tooltip>
 
-<Tooltip content="This tooltip appears on the left" side="left">
+<Tooltip content="This tooltip appears on the left" position="left">
   <Button variant="outline">Left</Button>
 </Tooltip>`}
           </ComponentCode>
@@ -186,7 +186,7 @@ export default function TooltipDoc() {
                   <td className="py-3 px-4 align-top text-sm">The element that triggers the tooltip</td>
                 </tr>
                 <tr className="border-b">
-                  <td className="py-3 px-4 align-top font-mono text-sm">side</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">position</td>
                   <td className="py-3 px-4 align-top font-mono text-sm">"top" | "right" | "bottom" | "left"</td>
                   <td className="py-3 px-4 align-top font-mono text-sm">"top"</td>
                   <td className="py-3 px-4 align-top text-sm">Position of the tooltip</td>
@@ -204,7 +204,7 @@ export default function TooltipDoc() {
                   <td className="py-3 px-4 align-top text-sm">Alignment along the trigger element</td>
                 </tr>
                 <tr>
-                  <td className="py-3 px-4 align-top font-mono text-sm">delayDuration</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">delay</td>
                   <td className="py-3 px-4 align-top font-mono text-sm">number</td>
                   <td className="py-3 px-4 align-top font-mono text-sm">300</td>
                   <td className="py-3 px-4 align-top text-sm">Delay before the tooltip appears in milliseconds</td>

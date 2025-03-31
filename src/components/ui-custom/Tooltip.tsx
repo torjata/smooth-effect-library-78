@@ -6,17 +6,29 @@ interface TooltipProps {
   content: React.ReactNode;
   children: React.ReactNode;
   position?: 'top' | 'right' | 'bottom' | 'left';
+  side?: 'top' | 'right' | 'bottom' | 'left'; // Add side prop to match shadcn/ui API
   className?: string;
   delay?: number;
+  sideOffset?: number; // Add sideOffset for compatibility
+  align?: 'start' | 'center' | 'end'; // Add align prop
+  delayDuration?: number; // Add delayDuration for compatibility
 }
 
 export function Tooltip({
   content,
   children,
   position = 'top',
+  side, // Accept side parameter
   className,
   delay = 300,
+  delayDuration, // Accept but don't use directly
+  sideOffset = 4, // Accept sideOffset
+  align = 'center', // Accept align
 }: TooltipProps) {
+  // Use side prop if provided, otherwise fall back to position
+  const tooltipPosition = side || position;
+  const tooltipDelay = delayDuration || delay;
+
   const [isVisible, setIsVisible] = useState(false);
   const [coords, setCoords] = useState({ x: 0, y: 0 });
   const childRef = useRef<HTMLDivElement>(null);
@@ -38,22 +50,42 @@ export function Tooltip({
       let x = 0;
       let y = 0;
       
-      switch (position) {
+      // Calculate position based on side/position and align props
+      switch (tooltipPosition) {
         case 'top':
           x = childRect.left + (childRect.width / 2) - (tooltipRect.width / 2);
-          y = childRect.top - tooltipRect.height - 8;
+          y = childRect.top - tooltipRect.height - sideOffset;
+          
+          // Apply alignment
+          if (align === 'start') x = childRect.left;
+          if (align === 'end') x = childRect.right - tooltipRect.width;
           break;
+          
         case 'right':
-          x = childRect.right + 8;
+          x = childRect.right + sideOffset;
           y = childRect.top + (childRect.height / 2) - (tooltipRect.height / 2);
+          
+          // Apply alignment
+          if (align === 'start') y = childRect.top;
+          if (align === 'end') y = childRect.bottom - tooltipRect.height;
           break;
+          
         case 'bottom':
           x = childRect.left + (childRect.width / 2) - (tooltipRect.width / 2);
-          y = childRect.bottom + 8;
+          y = childRect.bottom + sideOffset;
+          
+          // Apply alignment
+          if (align === 'start') x = childRect.left;
+          if (align === 'end') x = childRect.right - tooltipRect.width;
           break;
+          
         case 'left':
-          x = childRect.left - tooltipRect.width - 8;
+          x = childRect.left - tooltipRect.width - sideOffset;
           y = childRect.top + (childRect.height / 2) - (tooltipRect.height / 2);
+          
+          // Apply alignment
+          if (align === 'start') y = childRect.top;
+          if (align === 'end') y = childRect.bottom - tooltipRect.height;
           break;
       }
       
@@ -63,7 +95,7 @@ export function Tooltip({
       
       setCoords({ x, y });
     }
-  }, [isVisible, position]);
+  }, [isVisible, tooltipPosition, sideOffset, align]);
 
   // Apply positioning
   const tooltipStyle = {
@@ -96,7 +128,7 @@ export function Tooltip({
           className={cn(
             'fixed z-50 px-2.5 py-1.5 text-xs font-medium',
             'bg-popover text-popover-foreground shadow-md rounded-md border',
-            directionClasses[position],
+            directionClasses[tooltipPosition],
             className
           )}
           style={tooltipStyle}

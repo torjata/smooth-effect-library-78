@@ -5,8 +5,8 @@ import { useToast as useToastHook } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 
 interface ToastProps {
-  title?: string;
-  description?: string;
+  title?: React.ReactNode;
+  description?: React.ReactNode;
   type?: 'default' | 'success' | 'error' | 'warning' | 'info';
   duration?: number;
   onClose?: () => void;
@@ -100,7 +100,7 @@ export function ToastProvider({ children }: ToastProviderProps) {
             id={toast.id}
             title={toast.title}
             description={toast.description}
-            type={toast.type as any}
+            type={toast.type as 'default' | 'success' | 'error' | 'warning' | 'info'}
             onClose={toast.onOpenChange ? () => toast.onOpenChange?.(false) : undefined}
           />
         ))}
