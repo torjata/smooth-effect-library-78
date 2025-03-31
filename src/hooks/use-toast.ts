@@ -11,13 +11,14 @@ const TOAST_REMOVE_DELAY = 1000000
 
 export type ToastType = 'default' | 'success' | 'error' | 'warning' | 'info'
 
-// Updated to ensure type compatibility with ToastProps while including our custom properties
-type ToasterToast = ToastProps & {
+// Define ToasterToast with our custom properties
+type ToasterToast = Omit<ToastProps, "variant"> & {
   id: string
   title?: React.ReactNode
   description?: React.ReactNode
   action?: ToastActionElement
   type?: ToastType
+  duration?: number
 }
 
 const actionTypes = {
@@ -140,8 +141,17 @@ function dispatch(action: Action) {
   })
 }
 
-// Define Toast as a type that aligns with ToasterToast to ensure compatibility
-export type Toast = Omit<ToasterToast, "id">
+// Define Toast interface with proper type property
+export interface Toast {
+  id?: string
+  title?: React.ReactNode
+  description?: React.ReactNode
+  action?: ToastActionElement
+  type?: ToastType
+  duration?: number
+  onOpenChange?: (open: boolean) => void
+  open?: boolean
+}
 
 function toast({ ...props }: Toast) {
   const id = genId()
