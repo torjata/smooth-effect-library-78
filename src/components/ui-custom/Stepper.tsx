@@ -49,7 +49,7 @@ export function Stepper({
             {!isLast && (
               <div
                 className={cn(
-                  "absolute bg-border dark:bg-border",
+                  "absolute bg-border",
                   isVertical
                     ? "left-3.5 top-10 h-full w-px"
                     : "left-0 right-0 top-3.5 h-px w-full",
@@ -59,7 +59,7 @@ export function Stepper({
                 {isCompleted && (
                   <motion.div
                     className={cn(
-                      "absolute bg-primary dark:bg-primary",
+                      "absolute bg-primary",
                       isVertical ? "h-full w-full" : "h-full w-full"
                     )}
                     initial={{ [isVertical ? "height" : "width"]: 0 }}
@@ -81,8 +81,8 @@ export function Stepper({
                 className={cn(
                   "glassmorphism z-10 flex h-7 w-7 items-center justify-center rounded-full border transition-colors duration-200",
                   {
-                    "border-primary bg-primary dark:border-primary dark:bg-primary text-primary-foreground dark:text-primary-foreground": isActive || isCompleted,
-                    "border-muted bg-background text-foreground dark:border-muted dark:bg-background dark:text-foreground": !isActive && !isCompleted,
+                    "border-primary bg-primary text-primary-foreground": isActive || isCompleted,
+                    "border-muted bg-background": !isActive && !isCompleted,
                   }
                 )}
                 animate={{
@@ -107,10 +107,10 @@ export function Stepper({
                 <div className={cn(
                   "text-sm font-medium transition-colors duration-200",
                   isActive 
-                    ? "text-foreground dark:text-foreground" 
+                    ? "text-foreground" 
                     : isCompleted 
-                      ? "text-foreground/80 dark:text-foreground/80"
-                      : "text-muted-foreground dark:text-muted-foreground"
+                      ? "text-foreground/80"
+                      : "text-muted-foreground"
                 )}>
                   {step.title}
                 </div>
@@ -118,8 +118,8 @@ export function Stepper({
                   <div className={cn(
                     "mt-0.5 text-xs transition-colors duration-200",
                     isActive || isCompleted 
-                      ? "text-muted-foreground dark:text-muted-foreground" 
-                      : "text-muted-foreground/70 dark:text-muted-foreground/70"
+                      ? "text-muted-foreground" 
+                      : "text-muted-foreground/70"
                   )}>
                     {step.description}
                   </div>

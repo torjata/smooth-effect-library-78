@@ -41,27 +41,26 @@ export function Tooltip({
   }, []);
   
   const calculatePosition = () => {
-    if (!childRef.current || !isMounted || !tooltipRef.current) return;
+    if (!childRef.current || !isMounted) return;
     
     const rect = childRef.current.getBoundingClientRect();
-    const tooltipWidth = tooltipRef.current.offsetWidth;
-    const tooltipHeight = tooltipRef.current.offsetHeight;
+    const tooltipWidth = tooltipRef.current?.offsetWidth || 0;
+    const tooltipHeight = tooltipRef.current?.offsetHeight || 0;
     
     let x = 0;
     let y = 0;
     
-    // Calculate positions based on side and alignment
     switch (side) {
       case "top":
         x = rect.left + rect.width / 2;
-        y = rect.top - tooltipHeight - sideOffset;
+        y = rect.top - sideOffset;
         break;
       case "bottom":
         x = rect.left + rect.width / 2;
         y = rect.bottom + sideOffset;
         break;
       case "left":
-        x = rect.left - tooltipWidth - sideOffset;
+        x = rect.left - sideOffset;
         y = rect.top + rect.height / 2;
         break;
       case "right":
@@ -71,20 +70,18 @@ export function Tooltip({
     }
     
     // Adjust alignment
-    if (side === "top" || side === "bottom") {
-      if (align === "start") {
+    if (align === "start") {
+      if (side === "top" || side === "bottom") {
         x = rect.left;
-      } else if (align === "end") {
-        x = rect.right;
-      }
-      // For center, x is already set to rect.left + rect.width / 2
-    } else if (side === "left" || side === "right") {
-      if (align === "start") {
+      } else if (side === "left" || side === "right") {
         y = rect.top;
-      } else if (align === "end") {
+      }
+    } else if (align === "end") {
+      if (side === "top" || side === "bottom") {
+        x = rect.right;
+      } else if (side === "left" || side === "right") {
         y = rect.bottom;
       }
-      // For center, y is already set to rect.top + rect.height / 2
     }
     
     setPosition({ x, y });
@@ -92,8 +89,8 @@ export function Tooltip({
   
   const handleMouseEnter = () => {
     if (!isMounted) return;
+    calculatePosition();
     timeoutRef.current = window.setTimeout(() => {
-      calculatePosition();
       setIsOpen(true);
     }, delayDuration);
   };
@@ -132,36 +129,40 @@ export function Tooltip({
       zIndex: 9999,
     };
     
-    if (side === 'top') {
-      styles.bottom = window.innerHeight - position.y;
-      styles.left = position.x;
-      if (align === 'center') {
+    switch (side) {
+      case 'top':
+        styles.left = position.x;
+        styles.bottom = window.innerHeight - position.y;
         styles.transform = 'translateX(-50%)';
-      } else if (align === 'end') {
-        styles.transform = 'translateX(-100%)';
-      }
-    } else if (side === 'bottom') {
-      styles.top = position.y;
-      styles.left = position.x;
-      if (align === 'center') {
+        break;
+      case 'bottom':
+        styles.left = position.x;
+        styles.top = position.y;
         styles.transform = 'translateX(-50%)';
-      } else if (align === 'end') {
+        break;
+      case 'left':
+        styles.right = window.innerWidth - position.x;
+        styles.top = position.y;
+        styles.transform = 'translateY(-50%)';
+        break;
+      case 'right':
+        styles.left = position.x;
+        styles.top = position.y;
+        styles.transform = 'translateY(-50%)';
+        break;
+    }
+    
+    // Adjust alignment
+    if (align === "start") {
+      if (side === 'top' || side === 'bottom') {
+        styles.transform = '';
+      } else if (side === 'left' || side === 'right') {
+        styles.transform = '';
+      }
+    } else if (align === "end") {
+      if (side === 'top' || side === 'bottom') {
         styles.transform = 'translateX(-100%)';
-      }
-    } else if (side === 'left') {
-      styles.right = window.innerWidth - position.x;
-      styles.top = position.y;
-      if (align === 'center') {
-        styles.transform = 'translateY(-50%)';
-      } else if (align === 'end') {
-        styles.transform = 'translateY(-100%)';
-      }
-    } else if (side === 'right') {
-      styles.left = position.x;
-      styles.top = position.y;
-      if (align === 'center') {
-        styles.transform = 'translateY(-50%)';
-      } else if (align === 'end') {
+      } else if (side === 'left' || side === 'right') {
         styles.transform = 'translateY(-100%)';
       }
     }

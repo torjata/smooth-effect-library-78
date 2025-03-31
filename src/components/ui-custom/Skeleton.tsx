@@ -14,7 +14,7 @@ export function Skeleton({
   return (
     <div
       className={cn(
-        "glassmorphism h-5 w-full rounded-md bg-muted/40 dark:bg-muted/40 border border-border/10 dark:border-border/10",
+        "glassmorphism h-5 w-full rounded-md bg-muted/40",
         shimmer && "relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-shimmer before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent",
         className
       )}
@@ -33,7 +33,7 @@ export function TextSkeleton({ className }: { className?: string }) {
 
 export function CardSkeleton({ className }: { className?: string }) {
   return (
-    <div className={cn("glassmorphism space-y-5 rounded-xl p-4 border border-border/10 dark:border-border/10", className)}>
+    <div className={cn("glassmorphism space-y-5 rounded-xl p-4", className)}>
       <div className="space-y-3">
         <Skeleton className="h-5 w-2/5" />
         <Skeleton className="h-4 w-4/5" />
