@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+import { useToast as useToastHook } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 
 interface ToastProps {
@@ -88,7 +88,7 @@ interface ToastProviderProps {
 }
 
 export function ToastProvider({ children }: ToastProviderProps) {
-  const { toasts } = useToast();
+  const { toasts } = useToastHook();
 
   return (
     <>
@@ -108,3 +108,6 @@ export function ToastProvider({ children }: ToastProviderProps) {
     </>
   );
 }
+
+// Re-export the useToast hook from the hooks folder
+export { useToast, toast } from '@/hooks/use-toast';

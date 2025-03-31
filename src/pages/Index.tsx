@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -9,7 +8,8 @@ import { Button } from "@/components/ui-custom/Button";
 import { Card, CardContent } from "@/components/ui-custom/Card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui-custom/Tabs";
 import { Badge } from "@/components/ui-custom/Badge";
-import { ToastProvider, useToast } from "@/components/ui-custom/Toast";
+import { ToastProvider } from "@/components/ui-custom/Toast";
+import { useToast } from "@/hooks/use-toast";
 import { Input } from "@/components/ui-custom/Input";
 import { Avatar } from "@/components/ui-custom/Avatar";
 import { Tooltip } from "@/components/ui-custom/Tooltip";
@@ -156,7 +156,7 @@ const FeatureCard = ({ icon, title, description }: { icon: React.ReactNode, titl
 };
 
 const ComponentShowcase = () => {
-  const { addToast } = useToast();
+  const { toast } = useToast();
   
   const showToast = (type: "default" | "success" | "error" | "warning" | "info") => {
     const toastConfig = {
@@ -166,7 +166,7 @@ const ComponentShowcase = () => {
       duration: 5000,
     };
     
-    addToast(toastConfig);
+    toast(toastConfig);
   };
   
   return (

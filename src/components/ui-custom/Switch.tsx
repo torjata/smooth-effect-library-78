@@ -48,7 +48,7 @@ export function Switch({
   };
   
   const thumbOffsetClasses = {
-    sm: isChecked ? 'translate-x-3' : 'translate-x-0.5',
+    sm: isChecked ? 'translate-x-3.5' : 'translate-x-0.5',
     md: isChecked ? 'translate-x-5' : 'translate-x-0.5',
     lg: isChecked ? 'translate-x-6' : 'translate-x-0.5'
   };

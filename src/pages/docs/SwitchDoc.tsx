@@ -7,6 +7,7 @@ import { useState } from "react";
 
 export default function SwitchDoc() {
   const [checked, setChecked] = useState(false);
+  const [disabled, setDisabled] = useState(false);
   
   return (
     <DocsLayout>
@@ -14,55 +15,46 @@ export default function SwitchDoc() {
         <div>
           <h1 className="text-3xl font-bold">Switch</h1>
           <p className="text-muted-foreground mt-2">
-            Toggle switches for enabling or disabling options.
+            A control that allows the user to toggle between checked and not checked.
           </p>
         </div>
 
         <ComponentExample title="Basic Switch">
-          <div className="flex flex-col gap-4">
-            <Switch />
-          </div>
+          <Switch checked={checked} onChange={setChecked} />
           <ComponentCode>
-{`<Switch />`}
+{`import { Switch } from "@/components/ui-custom/Switch";
+import { useState } from "react";
+
+const [checked, setChecked] = useState(false);
+
+<Switch checked={checked} onChange={setChecked} />`}
           </ComponentCode>
         </ComponentExample>
 
-        <ComponentExample title="Controlled Switch">
-          <div className="flex flex-col gap-4">
-            <div className="space-y-2">
-              <Switch checked={checked} onCheckedChange={setChecked} />
-              <p className="text-sm text-muted-foreground">The switch is {checked ? "on" : "off"}</p>
-            </div>
-          </div>
+        <ComponentExample title="Switch with Label">
+          <Switch label="Airplane Mode" checked={checked} onChange={setChecked} />
           <ComponentCode>
-{`const [checked, setChecked] = useState(false);
-
-<Switch checked={checked} onCheckedChange={setChecked} />
-<p>The switch is {checked ? "on" : "off"}</p>`}
+{`<Switch label="Airplane Mode" checked={checked} onChange={setChecked} />`}
           </ComponentCode>
         </ComponentExample>
 
-        <ComponentExample title="With Labels">
-          <div className="flex flex-col gap-4">
-            <Switch label="Airplane Mode" />
-            <Switch label="Dark Mode" />
-            <Switch label="Notifications" />
-          </div>
+        <ComponentExample title="Disabled Switch">
+          <Switch disabled />
           <ComponentCode>
-{`<Switch label="Airplane Mode" />
-<Switch label="Dark Mode" />
-<Switch label="Notifications" />`}
+{`<Switch disabled />`}
           </ComponentCode>
         </ComponentExample>
 
-        <ComponentExample title="Disabled States">
+        <ComponentExample title="Switch Sizes">
           <div className="flex flex-col gap-4">
-            <Switch disabled label="Disabled (off)" />
-            <Switch disabled checked label="Disabled (on)" />
+            <Switch size="sm" label="Small" />
+            <Switch size="md" label="Medium" />
+            <Switch size="lg" label="Large" />
           </div>
           <ComponentCode>
-{`<Switch disabled label="Disabled (off)" />
-<Switch disabled checked label="Disabled (on)" />`}
+{`<Switch size="sm" label="Small" />
+<Switch size="md" label="Medium" />
+<Switch size="lg" label="Large" />`}
           </ComponentCode>
         </ComponentExample>
 
@@ -73,7 +65,7 @@ export default function SwitchDoc() {
             <table className="w-full border-collapse">
               <thead>
                 <tr className="border-b">
-                  <th className="py-3 px-4 text-left">Prop</th>
+                  <th className="py-3 px-4 text-left">Property</th>
                   <th className="py-3 px-4 text-left">Type</th>
                   <th className="py-3 px-4 text-left">Default</th>
                   <th className="py-3 px-4 text-left">Description</th>
@@ -87,10 +79,10 @@ export default function SwitchDoc() {
                   <td className="py-3 px-4 align-top text-sm">Whether the switch is checked</td>
                 </tr>
                 <tr className="border-b">
-                  <td className="py-3 px-4 align-top font-mono text-sm">onCheckedChange</td>
-                  <td className="py-3 px-4 align-top font-mono text-sm">(checked: boolean) =&gt; void</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">onChange</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">(checked: boolean) => void</td>
                   <td className="py-3 px-4 align-top font-mono text-sm">-</td>
-                  <td className="py-3 px-4 align-top text-sm">Function called when the switch state changes</td>
+                  <td className="py-3 px-4 align-top text-sm">Callback when state changes</td>
                 </tr>
                 <tr className="border-b">
                   <td className="py-3 px-4 align-top font-mono text-sm">disabled</td>
@@ -99,16 +91,16 @@ export default function SwitchDoc() {
                   <td className="py-3 px-4 align-top text-sm">Whether the switch is disabled</td>
                 </tr>
                 <tr className="border-b">
+                  <td className="py-3 px-4 align-top font-mono text-sm">size</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">'sm' | 'md' | 'lg'</td>
+                  <td className="py-3 px-4 align-top font-mono text-sm">'md'</td>
+                  <td className="py-3 px-4 align-top text-sm">Size of the switch</td>
+                </tr>
+                <tr>
                   <td className="py-3 px-4 align-top font-mono text-sm">label</td>
                   <td className="py-3 px-4 align-top font-mono text-sm">string</td>
                   <td className="py-3 px-4 align-top font-mono text-sm">-</td>
-                  <td className="py-3 px-4 align-top text-sm">Optional label text</td>
-                </tr>
-                <tr>
-                  <td className="py-3 px-4 align-top font-mono text-sm">className</td>
-                  <td className="py-3 px-4 align-top font-mono text-sm">string</td>
-                  <td className="py-3 px-4 align-top font-mono text-sm">-</td>
-                  <td className="py-3 px-4 align-top text-sm">Additional CSS classes</td>
+                  <td className="py-3 px-4 align-top text-sm">Label for the switch</td>
                 </tr>
               </tbody>
             </table>

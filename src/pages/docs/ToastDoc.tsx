@@ -13,7 +13,8 @@ export default function ToastDoc() {
     toast({
       title: `${type.charAt(0).toUpperCase() + type.slice(1)} Toast`,
       description: `This is a ${type} toast notification example.`,
-      type: type,
+      variant: "default", // Use the valid variant property
+      type: type, // Keep the custom type property for styling
       duration: 5000,
     });
   };
