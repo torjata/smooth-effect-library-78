@@ -1,12 +1,12 @@
 
 import React, { createContext, useContext } from 'react';
 import { cn } from '@/lib/utils';
-import { Check } from 'lucide-react';
+import { Check, ChevronDown, ChevronUp } from 'lucide-react';
 
 interface StepperContextValue {
   activeStep: number;
   orientation: 'horizontal' | 'vertical';
-  children?: React.ReactNode; // Add children to context type
+  children?: React.ReactNode;
 }
 
 const StepperContext = createContext<StepperContextValue>({
@@ -19,6 +19,7 @@ interface StepperProps {
   orientation?: 'horizontal' | 'vertical';
   className?: string;
   children: React.ReactNode;
+  variant?: 'default' | 'outline' | 'gradient';
 }
 
 export function Stepper({
@@ -26,13 +27,14 @@ export function Stepper({
   orientation = 'horizontal',
   className,
   children,
+  variant = 'default',
 }: StepperProps) {
   return (
     <StepperContext.Provider value={{ activeStep, orientation, children }}>
       <div
         className={cn(
           'flex',
-          orientation === 'vertical' ? 'flex-col' : 'flex-row items-center',
+          orientation === 'vertical' ? 'flex-col space-y-1' : 'flex-row items-center space-x-1',
           className
         )}
       >
@@ -63,7 +65,6 @@ export function StepperStep({
   const isCompleted = step < activeStep;
   
   // Calculate if this is the last step based on sibling count
-  // Since we can't use children from context directly for this logic
   const isLastStep = step === React.Children.count(
     React.Children.toArray(useContext(StepperContext).children)
   ) - 1;
@@ -71,23 +72,23 @@ export function StepperStep({
   return (
     <div
       className={cn(
-        'flex',
-        orientation === 'vertical' ? 'flex-row items-start' : 'flex-col items-center',
+        'relative',
+        orientation === 'vertical' ? 'flex flex-row items-start' : 'flex flex-col items-center',
         orientation === 'horizontal' && 'flex-1',
         className
       )}
     >
-      <div className="flex items-center">
+      <div className="flex items-center z-10">
         <div
           className={cn(
-            'flex items-center justify-center rounded-full w-8 h-8 border-2 text-sm font-medium',
-            isActive && 'border-primary text-primary',
+            'flex items-center justify-center rounded-full w-10 h-10 border-2 text-sm font-medium transition-all duration-200 shadow-sm',
+            isActive && 'border-primary bg-primary/10 text-primary ring-2 ring-primary/20 scale-110',
             isCompleted && 'border-primary bg-primary text-primary-foreground',
             !isActive && !isCompleted && 'border-muted-foreground/30 text-muted-foreground'
           )}
         >
           {isCompleted ? (
-            icon || <Check className="h-4 w-4" />
+            icon || <Check className="h-5 w-5 stroke-[2.5px]" />
           ) : (
             <span>{step + 1}</span>
           )}
@@ -96,7 +97,7 @@ export function StepperStep({
         {orientation === 'horizontal' && !isLastStep && (
           <div
             className={cn(
-              'w-full h-0.5 mx-4',
+              'w-full h-1 mx-4 rounded-full',
               isCompleted ? 'bg-primary' : 'bg-muted-foreground/30'
             )}
           />
@@ -107,16 +108,16 @@ export function StepperStep({
         <div
           className={cn(
             'flex flex-col',
-            orientation === 'vertical' ? 'ml-4' : 'mt-2',
-            orientation === 'vertical' && !isLastStep && 'mb-8',
+            orientation === 'vertical' ? 'ml-4' : 'mt-3',
+            orientation === 'vertical' && !isLastStep && 'mb-6',
             orientation === 'horizontal' && 'items-center text-center'
           )}
         >
           {label && (
             <span
               className={cn(
-                'text-sm font-medium',
-                isActive && 'text-primary',
+                'text-sm font-medium transition-colors',
+                isActive && 'text-primary font-semibold',
                 isCompleted && 'text-foreground',
                 !isActive && !isCompleted && 'text-muted-foreground'
               )}
@@ -125,7 +126,7 @@ export function StepperStep({
             </span>
           )}
           {description && (
-            <span className="text-xs text-muted-foreground mt-1">{description}</span>
+            <span className="text-xs text-muted-foreground mt-1 max-w-[180px]">{description}</span>
           )}
         </div>
       )}
@@ -133,10 +134,20 @@ export function StepperStep({
       {orientation === 'vertical' && !isLastStep && (
         <div
           className={cn(
-            'ml-4 w-0.5 h-8',
+            'absolute left-5 top-10 ml-0 w-[2px] h-full -z-10',
             isCompleted ? 'bg-primary' : 'bg-border'
           )}
         />
+      )}
+      
+      {orientation === 'vertical' && !isLastStep && (
+        <div className="absolute left-[18px] top-[50px]">
+          {isCompleted ? (
+            <ChevronUp className="w-4 h-4 text-primary" />
+          ) : (
+            <ChevronDown className="w-4 h-4 text-muted-foreground/50" />
+          )}
+        </div>
       )}
     </div>
   );

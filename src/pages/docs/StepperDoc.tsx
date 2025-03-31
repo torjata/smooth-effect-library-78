@@ -5,16 +5,45 @@ import { ComponentCode } from "@/components/docs/ComponentExample";
 import { useState } from "react";
 import { Button } from "@/components/ui-custom/Button";
 import { Stepper, StepperStep } from "@/components/ui-custom/Stepper";
+import { useToast } from "@/hooks/use-toast";
 
 export default function StepperDoc() {
   const [activeStep, setActiveStep] = useState(1);
+  const [verticalActiveStep, setVerticalActiveStep] = useState(0);
+  const { toast } = useToast();
 
   const handleNext = () => {
-    setActiveStep((prev) => Math.min(prev + 1, 3));
+    const nextStep = Math.min(activeStep + 1, 3);
+    setActiveStep(nextStep);
+    if (nextStep === 3) {
+      toast({
+        title: "Process Complete",
+        description: "You have successfully completed all steps!",
+        type: "success",
+        duration: 3000,
+      });
+    }
   };
 
   const handlePrev = () => {
     setActiveStep((prev) => Math.max(prev - 1, 0));
+  };
+
+  const handleVerticalNext = () => {
+    const nextStep = Math.min(verticalActiveStep + 1, 3);
+    setVerticalActiveStep(nextStep);
+    if (nextStep === 3) {
+      toast({
+        title: "Process Complete",
+        description: "You have successfully completed all steps!",
+        type: "success",
+        duration: 3000,
+      });
+    }
+  };
+
+  const handleVerticalPrev = () => {
+    setVerticalActiveStep((prev) => Math.max(prev - 1, 0));
   };
 
   return (
@@ -28,11 +57,11 @@ export default function StepperDoc() {
         </div>
 
         <ComponentExample title="Basic Stepper">
-          <div className="w-full max-w-2xl">
+          <div className="w-full max-w-2xl p-6 border rounded-lg">
             <Stepper activeStep={activeStep}>
-              <StepperStep step={0} label="Step 1" description="Personal information" />
-              <StepperStep step={1} label="Step 2" description="Contact details" />
-              <StepperStep step={2} label="Step 3" description="Review information" />
+              <StepperStep step={0} label="Account" description="Personal information" />
+              <StepperStep step={1} label="Contact" description="Contact details" />
+              <StepperStep step={2} label="Review" description="Review information" />
               <StepperStep step={3} label="Complete" description="Process completed" />
             </Stepper>
             <div className="mt-8 flex justify-between">
@@ -55,7 +84,16 @@ export default function StepperDoc() {
 {`const [activeStep, setActiveStep] = useState(1);
 
 const handleNext = () => {
-  setActiveStep((prev) => Math.min(prev + 1, 3));
+  const nextStep = Math.min(activeStep + 1, 3);
+  setActiveStep(nextStep);
+  if (nextStep === 3) {
+    toast({
+      title: "Process Complete",
+      description: "You have successfully completed all steps!",
+      type: "success",
+      duration: 3000,
+    });
+  }
 };
 
 const handlePrev = () => {
@@ -63,9 +101,9 @@ const handlePrev = () => {
 };
 
 <Stepper activeStep={activeStep}>
-  <StepperStep step={0} label="Step 1" description="Personal information" />
-  <StepperStep step={1} label="Step 2" description="Contact details" />
-  <StepperStep step={2} label="Step 3" description="Review information" />
+  <StepperStep step={0} label="Account" description="Personal information" />
+  <StepperStep step={1} label="Contact" description="Contact details" />
+  <StepperStep step={2} label="Review" description="Review information" />
   <StepperStep step={3} label="Complete" description="Process completed" />
 </Stepper>
 <div className="mt-8 flex justify-between">
@@ -82,6 +120,118 @@ const handlePrev = () => {
   >
     Next
   </Button>
+</div>`}
+          </ComponentCode>
+        </ComponentExample>
+
+        <ComponentExample title="Vertical Stepper">
+          <div className="w-full max-w-2xl p-6 border rounded-lg">
+            <div className="flex flex-col md:flex-row gap-8">
+              <div className="w-full md:w-1/2">
+                <Stepper activeStep={verticalActiveStep} orientation="vertical">
+                  <StepperStep step={0} label="Account Setup" description="Create your account" />
+                  <StepperStep step={1} label="Personal Details" description="Add personal information" />
+                  <StepperStep step={2} label="Confirm Email" description="Verify email address" />
+                  <StepperStep step={3} label="Complete" description="Account created" />
+                </Stepper>
+              </div>
+              <div className="w-full md:w-1/2 flex flex-col justify-center">
+                <div className="space-y-4">
+                  <h3 className="text-lg font-medium">
+                    {verticalActiveStep === 0 && "Create Account"}
+                    {verticalActiveStep === 1 && "Personal Information"}
+                    {verticalActiveStep === 2 && "Verification"}
+                    {verticalActiveStep === 3 && "All Done!"}
+                  </h3>
+                  <p className="text-sm text-muted-foreground">
+                    {verticalActiveStep === 0 && "Step 1: Set up your account credentials."}
+                    {verticalActiveStep === 1 && "Step 2: Tell us a bit about yourself."}
+                    {verticalActiveStep === 2 && "Step 3: Verify your email address."}
+                    {verticalActiveStep === 3 && "Your account has been successfully created!"}
+                  </p>
+                  <div className="pt-4 flex justify-between">
+                    <Button 
+                      variant="outline" 
+                      onClick={handleVerticalPrev}
+                      disabled={verticalActiveStep === 0}
+                      size="sm"
+                    >
+                      Back
+                    </Button>
+                    <Button 
+                      onClick={handleVerticalNext}
+                      disabled={verticalActiveStep === 3}
+                      size="sm"
+                    >
+                      {verticalActiveStep === 2 ? "Finish" : "Continue"}
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ComponentCode>
+{`const [verticalActiveStep, setVerticalActiveStep] = useState(0);
+
+const handleVerticalNext = () => {
+  const nextStep = Math.min(verticalActiveStep + 1, 3);
+  setVerticalActiveStep(nextStep);
+  if (nextStep === 3) {
+    toast({
+      title: "Process Complete",
+      description: "You have successfully completed all steps!",
+      type: "success",
+      duration: 3000,
+    });
+  }
+};
+
+const handleVerticalPrev = () => {
+  setVerticalActiveStep((prev) => Math.max(prev - 1, 0));
+};
+
+<div className="flex flex-col md:flex-row gap-8">
+  <div className="w-full md:w-1/2">
+    <Stepper activeStep={verticalActiveStep} orientation="vertical">
+      <StepperStep step={0} label="Account Setup" description="Create your account" />
+      <StepperStep step={1} label="Personal Details" description="Add personal information" />
+      <StepperStep step={2} label="Confirm Email" description="Verify email address" />
+      <StepperStep step={3} label="Complete" description="Account created" />
+    </Stepper>
+  </div>
+  <div className="w-full md:w-1/2 flex flex-col justify-center">
+    <div className="space-y-4">
+      <h3 className="text-lg font-medium">
+        {verticalActiveStep === 0 && "Create Account"}
+        {verticalActiveStep === 1 && "Personal Information"}
+        {verticalActiveStep === 2 && "Verification"}
+        {verticalActiveStep === 3 && "All Done!"}
+      </h3>
+      <p className="text-sm text-muted-foreground">
+        {verticalActiveStep === 0 && "Step 1: Set up your account credentials."}
+        {verticalActiveStep === 1 && "Step 2: Tell us a bit about yourself."}
+        {verticalActiveStep === 2 && "Step 3: Verify your email address."}
+        {verticalActiveStep === 3 && "Your account has been successfully created!"}
+      </p>
+      <div className="pt-4 flex justify-between">
+        <Button 
+          variant="outline" 
+          onClick={handleVerticalPrev}
+          disabled={verticalActiveStep === 0}
+          size="sm"
+        >
+          Back
+        </Button>
+        <Button 
+          onClick={handleVerticalNext}
+          disabled={verticalActiveStep === 3}
+          size="sm"
+        >
+          {verticalActiveStep === 2 ? "Finish" : "Continue"}
+        </Button>
+      </div>
+    </div>
+  </div>
 </div>`}
           </ComponentCode>
         </ComponentExample>
@@ -113,6 +263,12 @@ const handlePrev = () => {
                     <td className="py-3 px-4 align-top font-mono text-sm">"horizontal" | "vertical"</td>
                     <td className="py-3 px-4 align-top font-mono text-sm">"horizontal"</td>
                     <td className="py-3 px-4 align-top text-sm">Layout orientation</td>
+                  </tr>
+                  <tr className="border-b">
+                    <td className="py-3 px-4 align-top font-mono text-sm">variant</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">"default" | "outline" | "gradient"</td>
+                    <td className="py-3 px-4 align-top font-mono text-sm">"default"</td>
+                    <td className="py-3 px-4 align-top text-sm">Visual style variant</td>
                   </tr>
                   <tr>
                     <td className="py-3 px-4 align-top font-mono text-sm">className</td>
